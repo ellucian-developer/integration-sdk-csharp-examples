@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "EllucianEthosIntegrationStronglyTypedExample": {
+      "commandName": "Project",
+      "commandLineArgs": "<<YOUR API KEY GOES HERE>>"
+    }
+  }
+}
