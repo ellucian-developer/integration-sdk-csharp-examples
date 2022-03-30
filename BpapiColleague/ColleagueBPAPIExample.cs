@@ -11,7 +11,7 @@ namespace Ellucian.Ethos.Integration.StronglyTyped.Colleague.Example;
 public class ColleagueBPAPIExample : SDKExamples
 {
 
-    public static async Task RunColleagueBpApiExamples()
+    public static async Task Run()
     {
         await Task.Delay( 100 );
         Console.WriteLine( "Colleague BPAPI examples would be added in future." );

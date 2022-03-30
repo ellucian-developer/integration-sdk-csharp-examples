@@ -23,8 +23,8 @@ public class EthosChangeNotificationServiceExample : ExampleBase
     private static async Task GetNotificationsWithoutOverridesExampleAsync()
     {
         Console.WriteLine( "******* GetNotificationsWithoutOverridesExampleAsync() *******" );
-        EthosClientBuilder ethosClientBuilder = new EthosClientBuilder( SAMPLE_API_KEY )
-                                                .WithConnectionTimeout( 30 );
+        EthosClientBuilder ethosClientBuilder = GetEthosClientBuilder();
+
         EthosChangeNotificationService ethosChangeNotificationService = EthosChangeNotificationService.Build( action =>
         {
             action.WithEthosClientBuilder( ethosClientBuilder );
@@ -46,8 +46,8 @@ public class EthosChangeNotificationServiceExample : ExampleBase
     private static async Task GetNotificationsWithOverridesExampleAsync()
     {
         Console.WriteLine( "******* GetNotificationsWithOverridesExampleAsync() *******" );
-        EthosClientBuilder ethosClientBuilder = new EthosClientBuilder( SAMPLE_API_KEY )
-                                                    .WithConnectionTimeout( 30 );
+        EthosClientBuilder ethosClientBuilder = GetEthosClientBuilder();
+
         // This configuration will override any change notifications for persons that do not have a version of 12.3.0, with
         // content from a persons v8 request for the given persons ID (GUID) for the given change notification.
         EthosChangeNotificationService ethosChangeNotificationService = EthosChangeNotificationService.Build( action =>

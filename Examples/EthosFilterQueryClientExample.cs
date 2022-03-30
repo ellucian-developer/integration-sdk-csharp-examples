@@ -23,9 +23,9 @@ public class EthosFilterQueryClientExample : ExampleBase
     /// <returns>Task</returns>
     public static async Task Run()
     {
+        BuildEthosFilterClient();
         CriteriaExamples();
         NamedQueryExamples();
-
         await GetNamesUsingCriteriaFilterStringAsync();
         await GetUsingCriteriaFilterRolesAsync();
         await GetUsingCriteriaFilterCredentialsAsync();
@@ -40,6 +40,7 @@ public class EthosFilterQueryClientExample : ExampleBase
         await GetPagesUsingNamedQueryAsync();
     }
 
+    #region All Examples
     /// <summary>
     /// Various Examples of how criteria filter can be built.
     /// </summary>
@@ -159,24 +160,6 @@ public class EthosFilterQueryClientExample : ExampleBase
         Print( "NamedQuery3", filter );
     }
 
-    private static void Print( string exampleNumber, string filter )
-    {
-        Console.WriteLine( $"{exampleNumber}\t: {filter}" );
-    }
-
-    private static EthosFilterQueryClient ethosFilterQueryClient = GetEthosFilterQueryClient();
-
-    /// <summary>
-    /// Build the EthosFilterQueryClient object with builder pattern.
-    /// </summary>
-    /// <returns></returns>
-    private static EthosFilterQueryClient GetEthosFilterQueryClient()
-    {
-        return new EthosClientBuilder( SAMPLE_API_KEY )
-            .WithConnectionTimeout( 60 )
-            .BuildEthosFilterQueryClient();
-    }
-
     /// <summary>
     /// Creates : ?criteria={"names":[{"firstName":"John","lastName":"smith"}]}
     /// </summary>
@@ -191,7 +174,7 @@ public class EthosFilterQueryClientExample : ExampleBase
         Console.WriteLine( $"Criteria: { criteriaFilterStr }" );
         try
         {
-            EthosResponse ethosResponse = await ethosFilterQueryClient.GetWithCriteriaFilterAsync( resource, version, criteriaFilterStr );
+            EthosResponse ethosResponse = await filterClient.GetWithCriteriaFilterAsync( resource, version, criteriaFilterStr );
             Console.WriteLine( $"REQUESTED URL: { ethosResponse.RequestedUrl }" );
             Console.WriteLine( $"Number of resources returned: { ethosResponse.GetContentCount() }\r\n" );
             Console.WriteLine( ethosResponse.GetContentAsJson().ToString() );
@@ -216,10 +199,9 @@ public class EthosFilterQueryClientExample : ExampleBase
                                             .BuildCriteria();
         Console.WriteLine( $"Criteria: { criteriaFilterStr }" );
 
-        //EthosFilterQueryClient ethosFilterQueryClient = GetEthosFilterQueryClient();
         try
         {
-            EthosResponse ethosResponse = await ethosFilterQueryClient.GetWithCriteriaFilterAsync( resource, version, criteriaFilterStr );
+            EthosResponse ethosResponse = await filterClient.GetWithCriteriaFilterAsync( resource, version, criteriaFilterStr );
             Console.WriteLine( $"REQUESTED URL: { ethosResponse.RequestedUrl }" );
             Console.WriteLine( $"Number of resources returned: { ethosResponse.GetContentCount() }\r\n" );
             Console.WriteLine( ethosResponse.GetContentAsJson().ToString() );
@@ -244,10 +226,9 @@ public class EthosFilterQueryClientExample : ExampleBase
                                             .BuildCriteria();
         Console.WriteLine( $"Criteria: { criteriaFilterStr }" );
 
-        //EthosFilterQueryClient ethosFilterQueryClient = GetEthosFilterQueryClient();
         try
         {
-            EthosResponse ethosResponse = await ethosFilterQueryClient.GetWithCriteriaFilterAsync( resource, version, criteriaFilterStr );
+            EthosResponse ethosResponse = await filterClient.GetWithCriteriaFilterAsync( resource, version, criteriaFilterStr );
             Console.WriteLine( $"REQUESTED URL: { ethosResponse.RequestedUrl }" );
             Console.WriteLine( $"Number of resources returned: { ethosResponse.GetContentCount() }\r\n" );
             Console.WriteLine( ethosResponse.GetContentAsJson().ToString() );
@@ -274,10 +255,9 @@ public class EthosFilterQueryClientExample : ExampleBase
                                    .BuildCriteria();
         Console.WriteLine( $"Criteria: { criteriaFilterStr }" );
 
-        //EthosFilterQueryClient ethosFilterQueryClient = GetEthosFilterQueryClient();
         try
         {
-            EthosResponse ethosResponse = await ethosFilterQueryClient.GetWithCriteriaFilterAsync( resource, version, criteriaFilterStr );
+            EthosResponse ethosResponse = await filterClient.GetWithCriteriaFilterAsync( resource, version, criteriaFilterStr );
             Console.WriteLine( $"REQUESTED URL: { ethosResponse.RequestedUrl }" );
             Console.WriteLine( $"Number of resources returned: { ethosResponse.GetContentCount() }\r\n" );
             Console.WriteLine( ethosResponse.GetContentAsJson().ToString() );
@@ -304,10 +284,9 @@ public class EthosFilterQueryClientExample : ExampleBase
                                     .BuildCriteria();
         Console.WriteLine( $"Criteria: { criteriaFilterStr }" );
 
-        //EthosFilterQueryClient ethosFilterQueryClient = GetEthosFilterQueryClient();
         try
         {
-            EthosResponse ethosResponse = await ethosFilterQueryClient.GetWithCriteriaFilterAsync( resource, version, criteriaFilterStr );
+            EthosResponse ethosResponse = await filterClient.GetWithCriteriaFilterAsync( resource, version, criteriaFilterStr );
             Console.WriteLine( $"REQUESTED URL: { ethosResponse.RequestedUrl }" );
             Console.WriteLine( $"Number of resources returned: { ethosResponse.GetContentCount() }\r\n" );
             Console.WriteLine( ethosResponse.GetContentAsJson().ToString() );
@@ -332,10 +311,9 @@ public class EthosFilterQueryClientExample : ExampleBase
                                     .BuildCriteria();
         Console.WriteLine( $"Criteria: { criteriaFilterStr }" );
 
-        //EthosFilterQueryClient ethosFilterQueryClient = GetEthosFilterQueryClient();
         try
         {
-            EthosResponse ethosResponse = await ethosFilterQueryClient.GetWithCriteriaFilterAsync( resource, criteriaFilterStr );
+            EthosResponse ethosResponse = await filterClient.GetWithCriteriaFilterAsync( resource, criteriaFilterStr );
             Console.WriteLine( $"REQUESTED URL: { ethosResponse.RequestedUrl }" );
             Console.WriteLine( $"Number of resources returned: { ethosResponse.GetContentCount() }\r\n" );
             Console.WriteLine( ethosResponse.GetContentAsJson().ToString() );
@@ -363,10 +341,9 @@ public class EthosFilterQueryClientExample : ExampleBase
                                     .BuildCriteria();
         Console.WriteLine( $"Criteria: { criteriaFilterStr }" );
 
-        //EthosFilterQueryClient ethosFilterQueryClient = GetEthosFilterQueryClient();
         try
         {
-            EthosResponse ethosResponse = await ethosFilterQueryClient.GetWithCriteriaFilterAsync( resource, criteriaFilterStr );
+            EthosResponse ethosResponse = await filterClient.GetWithCriteriaFilterAsync( resource, criteriaFilterStr );
             Console.WriteLine( $"REQUESTED URL: { ethosResponse.RequestedUrl }" );
             Console.WriteLine( $"Number of resources returned: { ethosResponse.GetContentCount() }\r\n" );
             Console.WriteLine( ethosResponse.GetContentAsJson().ToString() );
@@ -377,6 +354,10 @@ public class EthosFilterQueryClientExample : ExampleBase
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     private static async Task GetUsingFilterMapAsync()
     {
         Console.WriteLine( "******* GetWithFilterMapAsync() using filterMap *******" );
@@ -384,14 +365,14 @@ public class EthosFilterQueryClientExample : ExampleBase
         string version = "application/vnd.hedtech.integration.v6+json";
         string filterKey = "firstName";
         string filterValue = "John";
-        //EthosFilterQueryClient ethosFilterQueryClient = GetEthosFilterQueryClient();
+
         try
         {
             FilterMap filterMap = new FilterMap()
                                       .WithParameterPair( filterKey, filterValue )
                                       .WithParameterPair( "lastName", "Smith" )
                                       .Build();
-            EthosResponse ethosResponse = await ethosFilterQueryClient.GetWithFilterMapAsync( resource, version, filterMap );
+            EthosResponse ethosResponse = await filterClient.GetWithFilterMapAsync( resource, version, filterMap );
             Console.WriteLine( $"REQUESTED URL: { ethosResponse.RequestedUrl }" );
             Console.WriteLine( $"Number of resources returned: { ethosResponse.GetContentCount() }\r\n" );
             Console.WriteLine( ethosResponse.GetContentAsJson().ToString() );
@@ -412,12 +393,12 @@ public class EthosFilterQueryClientExample : ExampleBase
         string criteriaKey = "firstName";
         string criteriaValue = "John";
         int pageSize = 50;
-        //EthosFilterQueryClient ethosFilterQueryClient = GetEthosFilterQueryClient();
+
         try
         {
             var criteriaFilter = new CriteriaFilter().WithArray( criteriaSetName, (criteriaKey, criteriaValue) );
             Console.WriteLine( criteriaFilter.BuildCriteria() );
-            List<EthosResponse> ethosResponseList = await ethosFilterQueryClient.GetPagesWithCriteriaFilterAsync( resource, version, criteriaFilter, pageSize ) as List<EthosResponse>;
+            List<EthosResponse> ethosResponseList = await filterClient.GetPagesWithCriteriaFilterAsync( resource, version, criteriaFilter, pageSize ) as List<EthosResponse>;
             Console.WriteLine( $"Number of pages returned: {ethosResponseList.Count}" );
             foreach ( EthosResponse ethosResponse in ethosResponseList )
             {
@@ -441,11 +422,11 @@ public class EthosFilterQueryClientExample : ExampleBase
         string criteriaValue = "John";
         int pageSize = 50;
         int offset = 40;
-        //EthosFilterQueryClient ethosFilterQueryClient = GetEthosFilterQueryClient();
+
         try
         {
             var criteriaFilter = new CriteriaFilter().WithArray( criteriaSetName, (criteriaKey, criteriaValue) );
-            List<EthosResponse> ethosResponseList = await ethosFilterQueryClient.GetPagesFromOffsetWithCriteriaFilterAsync( resource, version, criteriaFilter, pageSize, offset ) as List<EthosResponse>;
+            List<EthosResponse> ethosResponseList = await filterClient.GetPagesFromOffsetWithCriteriaFilterAsync( resource, version, criteriaFilter, pageSize, offset ) as List<EthosResponse>;
             Console.WriteLine( $"Number of pages returned: {ethosResponseList.Count}" );
             Console.WriteLine( $"OFFSET: { offset }" );
             foreach ( EthosResponse ethosResponse in ethosResponseList )
@@ -468,13 +449,13 @@ public class EthosFilterQueryClientExample : ExampleBase
         string filterMapKey = "firstName";
         string filterMapValue = "John";
         int pageSize = 50;
-        //EthosFilterQueryClient ethosFilterQueryClient = GetEthosFilterQueryClient();
+
         try
         {
             FilterMap filterMap = new FilterMap()
                                       .WithParameterPair( filterMapKey, filterMapValue )
                                       .Build();
-            List<EthosResponse> ethosResponseList = await ethosFilterQueryClient.GetPagesWithFilterMapAsync( resource, version, filterMap, pageSize ) as List<EthosResponse>;
+            List<EthosResponse> ethosResponseList = await filterClient.GetPagesWithFilterMapAsync( resource, version, filterMap, pageSize ) as List<EthosResponse>;
             Console.WriteLine( $"Number of pages returned: {ethosResponseList.Count}" );
             foreach ( EthosResponse ethosResponse in ethosResponseList )
             {
@@ -502,12 +483,12 @@ public class EthosFilterQueryClientExample : ExampleBase
         string amount = "2000";
         string balanceOn = "2018-04-01";
         string submittedBy = "11111111-1111-1111-1111-111111111111";
-        //EthosFilterQueryClient ethosFilterQueryClient = GetEthosFilterQueryClient();
+
 
         try
         {
             var namedQuery = new NamedQueryFilter( "accountSpecification" ).WithNamedQuery( ("accountingString", accountingString), ("amount", amount), ("balanceOn", balanceOn), ("submittedBy", submittedBy) ).BuildNamedQuery();
-            var ethosResponse = await ethosFilterQueryClient.GetWithCriteriaFilterAsync( resource, version, namedQuery );
+            var ethosResponse = await filterClient.GetWithCriteriaFilterAsync( resource, version, namedQuery );
             Console.WriteLine( $"REQUESTED URL: { ethosResponse.RequestedUrl }" );
             Console.WriteLine( $"Number of resources returned: { ethosResponse.GetContentCount() }" );
         }
@@ -516,4 +497,15 @@ public class EthosFilterQueryClientExample : ExampleBase
             Console.WriteLine( e.Message );
         }
     }
+
+    #endregion
+
+    #region Helper Method
+
+    private static void Print( string exampleNumber, string filter )
+    {
+        Console.WriteLine( $"{exampleNumber}\t: {filter}" );
+    }
+
+    #endregion
 }

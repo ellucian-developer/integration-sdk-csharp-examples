@@ -7,9 +7,6 @@
 using Ellucian.Ethos.Integration.Authentication;
 using Ellucian.Ethos.Integration.Client;
 
-using System;
-using System.Threading.Tasks;
-
 namespace Ellucian.Examples;
 
 /// <summary>

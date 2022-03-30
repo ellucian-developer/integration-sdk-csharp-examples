@@ -23,18 +23,22 @@ public class BannerBPAPIExample : ExampleBase
     /// Calls all Banner BPAPI's.
     /// </summary>
     /// <returns></returns>
-    public static async Task RunBannerBpApiExamples()
+    public static async Task Run()
     {
-        client = GetEthosProxyClient();
+        BuildEthosProxyClient();
         await ExampleGetTermCodesAsync();
         await ExampleFullCrudWithStronglyTypedAsync();
     }
 
+    /// <summary>
+    /// How to perform http GET using a strongly typed object.
+    /// </summary>
+    /// <returns></returns>
     private static async Task ExampleGetTermCodesAsync()
     {
         try
         {
-            var response = await client.GetAsync<IEnumerable<TermCodesV100GetRequest>>( "term-codes" );
+            var response = await proxyClient.GetAsync<IEnumerable<TermCodesV100GetRequest>>( "term-codes" );
 
             if ( response != null )
             {
@@ -52,24 +56,27 @@ public class BannerBPAPIExample : ExampleBase
     }
 
     /// <summary>
-    /// In this example 
+    /// This example illustrate hot to use strongly typed object to perform a GET/POST/PUT operation.
     /// </summary>
     /// <returns></returns>
     private static async Task ExampleFullCrudWithStronglyTypedAsync()
     {
-        filterClient = GetEthosFilterClient();
+        BuildEthosFilterClient();
         var resourceName = "person-search";
         var filterMap = new FilterMap() { };
         var filter = filterMap.WithParameterPair( "lastName", "abbe" ).Build();
 
+        //Use filter client to perform a serch using http GET to find records.
         var response = await filterClient.GetWithFilterMapAsync<IEnumerable<PersonSearchV100GetRequest>>( resourceName, filter );
         int num = GetRandomNumber( ( ( IEnumerable<PersonSearchV100GetRequest> ) response.Dto ).Count() );
 
         try
         {
+            //Select a random record from searched records collection.
             PersonSearchV100GetRequest? searchedRecord = ( ( IEnumerable<PersonSearchV100GetRequest> ) response.Dto ).ToList() [ num ];
             Console.WriteLine( $"{ searchedRecord.LastName } { searchedRecord.Id }" );
 
+            //Create a strongly typed object for POST.
             PersonCommentsV100PostRequest pcPostReq = new PersonCommentsV100PostRequest()
             {
                 Id = searchedRecord.Id,
@@ -82,15 +89,15 @@ public class BannerBPAPIExample : ExampleBase
                 TextNar = "Testing through C-Sharp SDK"
             };
 
+            //Perform POST.
             EthosResponse ethosPostResponse = await filterClient.PostAsync<PersonCommentsV100PostRequest>( "person-comments", pcPostReq );
             var pcResps = ethosPostResponse.Deserialize<IEnumerable<PersonCommentsV100PostResponse>>();
-            Console.WriteLine( "After POST\n\n" );
-
             foreach ( PersonCommentsV100PostResponse pcResp in pcResps )
             {
                 Console.WriteLine( $"Contact Date: {pcResp.ContactDate}, Text: {pcResp.Text}, Text Nar: {pcResp.TextNar}" );
             }
 
+            //Create a strongly typed object for PUT.
             PersonCommentsV100PutRequest putReq = new PersonCommentsV100PutRequest()
             {
                 Id = searchedRecord.Id,
@@ -103,9 +110,9 @@ public class BannerBPAPIExample : ExampleBase
                 TextNar = "Testing through C-Sharp SDK"
             };
 
+            //Perform PUT
             EthosResponse ethosPutResponse = await filterClient.PutAsync<PersonCommentsV100PutRequest>( "person-comments", putReq );
             var putResps = ethosPutResponse.Deserialize<IEnumerable<PersonCommentsV100PutResponse>>();
-            Console.WriteLine("After PUT\n\n");
             foreach ( PersonCommentsV100PutResponse putResp in putResps )
             {
                 Console.WriteLine( $"Contact Date: {putResp.ContactDate}, Text: {putResp.Text}, Text Nar: {putResp.TextNar}" );

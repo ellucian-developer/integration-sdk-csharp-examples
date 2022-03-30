@@ -64,31 +64,6 @@ public class EthosProxyClientExample : ExampleBase
         await DoCrudExample();
     }
 
-    private static EthosProxyClient ethosProxyClient = GetEthosProxyClient();
-
-    private static EthosProxyClient GetEthosProxyClient()
-    {
-        EthosClientBuilder ethosClientBUilder = new EthosClientBuilder( SAMPLE_API_KEY ).WithConnectionTimeout( 120 );
-        return ethosClientBUilder.BuildEthosProxyClient();
-    }
-
-
-    /// <summary>
-    /// PrintHeaders
-    /// </summary>
-    /// <param name="ethosResponse"></param>
-    private static void PrintHeaders( EthosResponse ethosResponse )
-    {
-        Console.WriteLine( $"Header: { ethosResponse.GetHeader( EthosProxyClient.HDR_DATE ) }" );
-        Console.WriteLine( $"Header: { ethosResponse.GetHeader( EthosProxyClient.HDR_CONTENT_TYPE ) }" );
-        Console.WriteLine( $"Header: { ethosResponse.GetHeader( EthosProxyClient.HDR_X_TOTAL_COUNT ) }" );
-        Console.WriteLine( $"Header: { ethosResponse.GetHeader( EthosProxyClient.HDR_APPLICATION_CONTEXT ) }" );
-        Console.WriteLine( $"Header: { ethosResponse.GetHeader( EthosProxyClient.HDR_X_MAX_PAGE_SIZE ) }" );
-        Console.WriteLine( $"Header: { ethosResponse.GetHeader( EthosProxyClient.HDR_X_MEDIA_TYPE ) }" );
-        Console.WriteLine( $"Header: { ethosResponse.GetHeader( EthosProxyClient.HDR_HEDTECH_ETHOS_INTEGRATION_APPLICATION_ID ) }" );
-        Console.WriteLine( $"Header: { ethosResponse.GetHeader( EthosProxyClient.HDR_HEDTECH_ETHOS_INTEGRATION_APPLICATION_NAME ) }" );
-    }
-
     #region All examples
 
     /// <summary>
@@ -104,7 +79,7 @@ public class EthosProxyClientExample : ExampleBase
 
             if ( !string.IsNullOrWhiteSpace( id ) )
             {
-                EthosResponse ethosResponse = await ethosProxyClient.GetByIdAsync( resource, id );
+                EthosResponse ethosResponse = await proxyClient.GetByIdAsync( resource, id );
                 Console.WriteLine( "******* Get resource by ID example. *******" );
                 Console.WriteLine( $"RESOURCE: { resource }" );
                 Console.WriteLine( $"RESOURCE ID: { id }" );
@@ -131,7 +106,7 @@ public class EthosProxyClientExample : ExampleBase
 
             if ( !string.IsNullOrWhiteSpace( id ) )
             {
-                string ethosResponse = await ethosProxyClient.GetAsStringByIdAsync( resource, id, "application/vnd.hedtech.integration.v7.2.0+json" );
+                string ethosResponse = await proxyClient.GetAsStringByIdAsync( resource, id, "application/vnd.hedtech.integration.v7.2.0+json" );
                 Console.WriteLine( "******* Get resource by ID example. *******" );
                 Console.WriteLine( $"RESOURCE: { resource }" );
                 Console.WriteLine( $"RESOURCE ID: { id }" );
@@ -156,7 +131,7 @@ public class EthosProxyClientExample : ExampleBase
         {
             if ( !string.IsNullOrWhiteSpace( id ) )
             {
-                var jsonNode = await ethosProxyClient.GetAsJObjectByIdAsync( resource, id );
+                var jsonNode = await proxyClient.GetAsJObjectByIdAsync( resource, id );
                 Console.WriteLine( "******* Get resource by ID example. *******" );
                 Console.WriteLine( $"RESOURCE: { resource }" );
                 Console.WriteLine( $"RESOURCE ID: { id }" );
@@ -178,7 +153,7 @@ public class EthosProxyClientExample : ExampleBase
         string resource = "student-cohorts";
         try
         {
-            int pageSize = await ethosProxyClient.GetPageSizeAsync( resource );
+            int pageSize = await proxyClient.GetPageSizeAsync( resource );
             Console.WriteLine( "******* Get resource page size example. *******" );
             Console.WriteLine( $"RESOURCE: {resource}" );
             Console.WriteLine( $"Page Size: {pageSize}" );
@@ -198,7 +173,7 @@ public class EthosProxyClientExample : ExampleBase
         string resource = "student-cohorts";
         try
         {
-            int pageSize = await ethosProxyClient.GetMaxPageSizeAsync( resource );
+            int pageSize = await proxyClient.GetMaxPageSizeAsync( resource );
             Console.WriteLine( "******* Get resource max page size example. *******" );
             Console.WriteLine( $"RESOURCE: {resource}" );
             Console.WriteLine( $"MAX PAGE SIZE: {pageSize}" );
@@ -219,7 +194,7 @@ public class EthosProxyClientExample : ExampleBase
         try
         {
             string resourceName = "student-cohorts";
-            ethosResponse = await ethosProxyClient.GetAsync( resourceName, string.Empty );
+            ethosResponse = await proxyClient.GetAsync( resourceName, string.Empty );
             string totalCountHdr = ethosResponse.GetHeader( EthosProxyClient.HDR_X_TOTAL_COUNT );
             Console.WriteLine( "******* Get data for resource example, no paging. *******" );
             Console.WriteLine( $"Get data for resource: {resourceName}" );
@@ -242,7 +217,7 @@ public class EthosProxyClientExample : ExampleBase
         try
         {
             string resourceName = "student-cohorts";
-            string response = await ethosProxyClient.GetAsStringAsync( resourceName, string.Empty );
+            string response = await proxyClient.GetAsStringAsync( resourceName, string.Empty );
             string jsonNode = JsonConvert.SerializeObject( response );
             Console.WriteLine( "******* Get data for resource as string example, no paging. *******" );
             Console.WriteLine( $"Get data for resource: { resourceName }" );
@@ -264,7 +239,7 @@ public class EthosProxyClientExample : ExampleBase
         try
         {
             string resourceName = "student-cohorts";
-            var jsonNode = await ethosProxyClient.GetAsJArrayAsync( resourceName, "" );
+            var jsonNode = await proxyClient.GetAsJArrayAsync( resourceName, "" );
             Console.WriteLine( "******* Get data for resource as Json example, no paging. *******" );
             Console.WriteLine( $"Get data for resource: { resourceName }" );
             Console.WriteLine( "getResource() PAGE SIZE: " + jsonNode.Count );
@@ -285,7 +260,7 @@ public class EthosProxyClientExample : ExampleBase
         try
         {
             string resourceName = "student-cohorts";
-            var ethosResponseList = await ethosProxyClient.GetAllPagesAsync( resourceName, "", 15 );
+            var ethosResponseList = await proxyClient.GetAllPagesAsync( resourceName, "", 15 );
             Console.WriteLine( "******* Get all pages with page size example. *******" );
             Console.WriteLine( $"Get data for resource: { resourceName }" );
             int counter = ethosResponseList.Count();
@@ -312,7 +287,7 @@ public class EthosProxyClientExample : ExampleBase
         {
             string resourceName = "student-cohorts";
             //ObjectMapper objectMapper = new ObjectMapper();
-            var stringList = await ethosProxyClient.GetAllPagesAsStringsAsync( resourceName, "", 15 );
+            var stringList = await proxyClient.GetAllPagesAsStringsAsync( resourceName, "", 15 );
             Console.WriteLine( "******* Get all pages as strings with page size example. *******" );
             Console.WriteLine( $"Get data for resource: { resourceName }" );
             int counter = stringList.Count();
@@ -338,7 +313,7 @@ public class EthosProxyClientExample : ExampleBase
         try
         {
             string resourceName = "student-cohorts";
-            var jsonNodeList = await ethosProxyClient.GetAllPagesAsJArraysAsync( resourceName, "", 15 );
+            var jsonNodeList = await proxyClient.GetAllPagesAsJArraysAsync( resourceName, "", 15 );
             Console.WriteLine( "******* Get all pages as Jsons with page size example. *******" );
             Console.WriteLine( $"Get data for resource: { resourceName }" );
             int counter = jsonNodeList.Count();
@@ -365,10 +340,10 @@ public class EthosProxyClientExample : ExampleBase
         try
         {
             string resourceName = "student-cohorts";
-            int totalCount = await ethosProxyClient.GetTotalCountAsync( resourceName );
+            int totalCount = await proxyClient.GetTotalCountAsync( resourceName );
             // Calculate the offset to be 95% of the totalCount to avoid paging through potentially tons of pages.
             int offset = ( int ) ( totalCount * 0.95 );
-            var ethosResponseList = await ethosProxyClient.GetAllPagesFromOffsetAsync( resourceName, "", offset );
+            var ethosResponseList = await proxyClient.GetAllPagesFromOffsetAsync( resourceName, "", offset );
             Console.WriteLine( "******* Get all pages from offset example. *******" );
             Console.WriteLine( $"Get data for resource: { resourceName }" );
             Console.WriteLine( $"Calculated offset of { offset } which is 95 percent of a total count of { totalCount } to avoid paging through potentially lots of pages." );
@@ -397,10 +372,10 @@ public class EthosProxyClientExample : ExampleBase
         try
         {
             string resourceName = "student-cohorts";
-            int totalCount = await ethosProxyClient.GetTotalCountAsync( resourceName );
+            int totalCount = await proxyClient.GetTotalCountAsync( resourceName );
             // Calculate the offset to be 95% of the totalCount to avoid paging through potentially tons of pages.
             int offset = ( int ) ( totalCount * 0.95 );
-            var stringList = await ethosProxyClient.GetAllPagesFromOffsetAsStringsAsync( resourceName, "", offset, 0 );
+            var stringList = await proxyClient.GetAllPagesFromOffsetAsStringsAsync( resourceName, "", offset, 0 );
             Console.WriteLine( "******* Get all pages from offset as strings example. *******" );
             Console.WriteLine( $"Get data for resource: { resourceName }" );
             Console.WriteLine( $"Calculated offset of { offset } which is 95 percent of a total count of { totalCount } to avoid paging through potentially lots of pages." );
@@ -429,10 +404,10 @@ public class EthosProxyClientExample : ExampleBase
         try
         {
             string resourceName = "student-cohorts";
-            int totalCount = await ethosProxyClient.GetTotalCountAsync( resourceName );
+            int totalCount = await proxyClient.GetTotalCountAsync( resourceName );
             // Calculate the offset to be 95% of the totalCount to avoid paging through potentially tons of pages.
             int offset = ( int ) ( totalCount * 0.95 );
-            var jsonNodeList = await ethosProxyClient.GetAllPagesFromOffsetAsJArraysAsync( resourceName, "", offset );
+            var jsonNodeList = await proxyClient.GetAllPagesFromOffsetAsJArraysAsync( resourceName, "", offset );
             Console.WriteLine( "******* Get all pages from offset as Jsons example. *******" );
             Console.WriteLine( $"Get data for resource: { resourceName }" );
             Console.WriteLine( $"Calculated offset of { offset } which is 95 percent of a total count of { totalCount } to avoid paging through potentially lots of pages." );
@@ -461,7 +436,7 @@ public class EthosProxyClientExample : ExampleBase
         try
         {
             string resourceName = "student-cohorts";
-            var ethosResponseList = await ethosProxyClient.GetPagesAsync( resourceName, "", 15, 3 );
+            var ethosResponseList = await proxyClient.GetPagesAsync( resourceName, "", 15, 3 );
             Console.WriteLine( "******* Get some number of pages with page size example. *******" );
             Console.WriteLine( $"Get data for resource: { resourceName }" );
             int counter = ethosResponseList.Count();
@@ -488,7 +463,7 @@ public class EthosProxyClientExample : ExampleBase
         try
         {
             string resourceName = "student-cohorts";
-            var stringList = await ethosProxyClient.GetPagesAsStringsAsync( resourceName, "", 15, 3 );
+            var stringList = await proxyClient.GetPagesAsStringsAsync( resourceName, "", 15, 3 );
             Console.WriteLine( "******* Get some number of pages as strings with page size example. *******" );
             Console.WriteLine( $"Get data for resource: { resourceName }" );
             int counter = stringList.Count();
@@ -514,7 +489,7 @@ public class EthosProxyClientExample : ExampleBase
         try
         {
             string resourceName = "student-cohorts";
-            var jsonNodeList = await ethosProxyClient.GetPagesAsJArraysAsync( resourceName, "", 15, 3 );
+            var jsonNodeList = await proxyClient.GetPagesAsJArraysAsync( resourceName, "", 15, 3 );
             Console.WriteLine( "******* Get some number of pages as Jsons with page size example. *******" );
             Console.WriteLine( $"Get data for resource: { resourceName }" );
             int counter = jsonNodeList.Count();
@@ -544,7 +519,7 @@ public class EthosProxyClientExample : ExampleBase
             int pageSize = 15;
             int offset = 10;
             int numPages = 3;
-            var ethosResponseList = await ethosProxyClient.GetPagesFromOffsetAsync( resourceName, "", pageSize, offset, numPages );
+            var ethosResponseList = await proxyClient.GetPagesFromOffsetAsync( resourceName, "", pageSize, offset, numPages );
             Console.WriteLine( "******* Get some number of pages with page size from offset example. *******" );
             Console.WriteLine( $"Get data for resource: { resourceName }" );
             Console.WriteLine( $"OFFSET: { offset }" );
@@ -576,7 +551,7 @@ public class EthosProxyClientExample : ExampleBase
             int pageSize = 15;
             int offset = 10;
             int numPages = 3;
-            var stringList = await ethosProxyClient.GetPagesFromOffsetAsStringsAsync( resourceName, "", pageSize, offset, numPages );
+            var stringList = await proxyClient.GetPagesFromOffsetAsStringsAsync( resourceName, "", pageSize, offset, numPages );
             Console.WriteLine( "******* Get some number of pages as strings with page size example. *******" );
             Console.WriteLine( $"Get data for resource: { resourceName }" );
             Console.WriteLine( $"OFFSET: { offset }" );
@@ -608,7 +583,7 @@ public class EthosProxyClientExample : ExampleBase
             int pageSize = 15;
             int offset = 10;
             int numPages = 3;
-            var jsonNodeList = await ethosProxyClient.GetPagesFromOffsetAsJArraysAsync( resourceName, "", pageSize, offset, numPages );
+            var jsonNodeList = await proxyClient.GetPagesFromOffsetAsJArraysAsync( resourceName, "", pageSize, offset, numPages );
             Console.WriteLine( "******* Get some number of pages from offset as Jsons with page size example. *******" );
             Console.WriteLine( $"Get data for resource: { resourceName }" );
             Console.WriteLine( $"OFFSET: { offset }" );
@@ -641,14 +616,14 @@ public class EthosProxyClientExample : ExampleBase
             int pageSize = 15;
             int numRows = 40;
             int rowCount = 0;
-            var ethosResponseList = await ethosProxyClient.GetRowsAsync( resourceName, version, pageSize, numRows );
+            var ethosResponseList = await proxyClient.GetRowsAsync( resourceName, version, pageSize, numRows );
             Console.WriteLine( "******* Get some number of rows with page size example. *******" );
             Console.WriteLine( $"Get data for resource: { resourceName }" );
 
             for ( int i = 0; i < ethosResponseList.Count(); i++ )
             {
                 EthosResponse ethosResponse = ethosResponseList.ElementAt( i );
-                JArray jsonNode = JsonConvert.DeserializeObject( ethosResponse.Content ) as JArray;
+                JArray jsonNode = JsonConvert.DeserializeObject( ethosResponse!.Content ) as JArray;
                 rowCount += jsonNode.Count;
                 Console.WriteLine( $"PAGE { i + 1 }: { ethosResponse.Content }" );
                 Console.WriteLine( $"PAGE { i + 1 } SIZE: { jsonNode.Count }" );
@@ -672,7 +647,7 @@ public class EthosProxyClientExample : ExampleBase
             string resourceName = "student-cohorts";
             string version = "application/vnd.hedtech.integration.v7.2.0+json";
             int numRows = 40;
-            var stringList = await ethosProxyClient.GetRowsAsStringsAsync( resourceName, version, numRows );
+            var stringList = await proxyClient.GetRowsAsStringsAsync( resourceName, version, numRows );
             Console.WriteLine( "******* Get some number of rows as strings example. *******" );
             Console.WriteLine( $"Get data for resource: {resourceName}" );
             Console.WriteLine( $"RESPONSE: { string.Join( ',', stringList ) }" );
@@ -695,7 +670,7 @@ public class EthosProxyClientExample : ExampleBase
             string resourceName = "student-cohorts";
             string version = "application/vnd.hedtech.integration.v7.2.0+json";
             int numRows = 40;
-            var jsonNode = await ethosProxyClient.GetRowsAsJArrayAsync( resourceName, version, numRows );
+            var jsonNode = await proxyClient.GetRowsAsJArrayAsync( resourceName, version, numRows );
             Console.WriteLine( "******* Get some number of rows as JSON objects example. *******" );
             Console.WriteLine( $"Get data for resource: { resourceName }" );
             Console.WriteLine( $"RESPONSE: { jsonNode.ToString() }" );
@@ -721,7 +696,7 @@ public class EthosProxyClientExample : ExampleBase
             int offset = 0;
             int numRows = 1000;
             int rowCount = 0;
-            var ethosResponseList = await ethosProxyClient.GetRowsFromOffsetAsync( resourceName, version, pageSize, offset, numRows );
+            var ethosResponseList = await proxyClient.GetRowsFromOffsetAsync( resourceName, version, pageSize, offset, numRows );
             Console.WriteLine( "******* Get some number of rows from offset with page size example. *******" );
             Console.WriteLine( $"Get data for resource: { resourceName }" );
             Console.WriteLine( $"OFFSET: { offset }" );
@@ -756,7 +731,7 @@ public class EthosProxyClientExample : ExampleBase
             string version = "application/json";
             int offset = 10;
             int numRows = 40;
-            var stringList = await ethosProxyClient.GetRowsFromOffsetAsStringsAsync( resourceName, version, offset, numRows );
+            var stringList = await proxyClient.GetRowsFromOffsetAsStringsAsync( resourceName, version, offset, numRows );
             Console.WriteLine( "******* Get some number of rows from offset as strings example. *******" );
             Console.WriteLine( $"Get data for resource: { resourceName }" );
             Console.WriteLine( $"OFFSET: { offset }" );
@@ -781,7 +756,7 @@ public class EthosProxyClientExample : ExampleBase
             string version = "application/json";
             int offset = 10;
             int numRows = 40;
-            var jsonNode = await ethosProxyClient.GetRowsFromOffsetAsJArrayAsync( resourceName, version, offset, numRows );
+            var jsonNode = await proxyClient.GetRowsFromOffsetAsJArrayAsync( resourceName, version, offset, numRows );
             Console.WriteLine( "******* Get some number of rows from offset as JSON objects example. *******" );
             Console.WriteLine( $"Get data for resource: { resourceName }" );
             Console.WriteLine( $"OFFSET: { offset }" );
@@ -803,7 +778,7 @@ public class EthosProxyClientExample : ExampleBase
         EthosResponseConverter converter = new EthosResponseConverter();
         try
         {
-            IEnumerable<EthosResponse> responses = await ethosProxyClient.GetRowsAsync( "persons", "", 1, 1 );
+            IEnumerable<EthosResponse> responses = await proxyClient.GetRowsAsync( "persons", "", 1, 1 );
             EthosResponse firstInList = responses.ElementAt( 0 );
             JToken person = converter.ToJArray( firstInList ).ElementAt( 0 );
             string personId = person [ "id" ].ToString();
@@ -819,7 +794,7 @@ public class EthosProxyClientExample : ExampleBase
             categoryForPersonHold [ "category" ] = "financial";
             personHold [ "type" ] = categoryForPersonHold;
 
-            EthosResponse response = await ethosProxyClient.PostAsync( "person-holds", personHold );
+            EthosResponse response = await proxyClient.PostAsync( "person-holds", personHold );
             Console.WriteLine( "Created a 'person-holds' record:" );
             Console.WriteLine( response.Content );
             Console.WriteLine();
@@ -832,17 +807,17 @@ public class EthosProxyClientExample : ExampleBase
             personHold.Remove( "id" );
             DateTime newHoldEnd = DateTime.Now.AddDays( 1 );
             personHold [ "startOn" ] = newHoldEnd.ToString( "yyyy-MM-ddThh:mm:ssZ" );
-            response = await ethosProxyClient.PutAsync( "person-holds", newId, personHold );
+            response = await proxyClient.PutAsync( "person-holds", newId, personHold );
             Console.WriteLine( $"Successfully updated person-holds record {newId}" );
 
             // delete the record
-            await ethosProxyClient.DeleteAsync( "person-holds", newId );
+            await proxyClient.DeleteAsync( "person-holds", newId );
             Console.WriteLine( $"Successfully deleted person-holds record {newId}" );
 
             // attempt to get the formerly created, now deleted, record, and make sure it is no longer there.
             try
             {
-                await ethosProxyClient.GetByIdAsync( "person-holds", newId );
+                await proxyClient.GetByIdAsync( "person-holds", newId );
             }
             catch
             {
@@ -863,7 +838,7 @@ public class EthosProxyClientExample : ExampleBase
     /// <returns>Task</returns>
     private static async Task DoSimplePersonsIterationExample()
     {
-        JArray persons = await ethosProxyClient.GetAsJArrayAsync( "persons", string.Empty );
+        JArray persons = await proxyClient.GetAsJArrayAsync( "persons", string.Empty );
         foreach ( JToken person in persons )
         {
             string id = person [ "id" ].ToString();
@@ -873,4 +848,22 @@ public class EthosProxyClientExample : ExampleBase
     }
     #endregion
 
+    #region Helper Method
+    /// <summary>
+    /// PrintHeaders
+    /// </summary>
+    /// <param name="ethosResponse"></param>
+    private static void PrintHeaders( EthosResponse ethosResponse )
+    {
+        Console.WriteLine( $"Header: { ethosResponse.GetHeader( EthosProxyClient.HDR_DATE ) }" );
+        Console.WriteLine( $"Header: { ethosResponse.GetHeader( EthosProxyClient.HDR_CONTENT_TYPE ) }" );
+        Console.WriteLine( $"Header: { ethosResponse.GetHeader( EthosProxyClient.HDR_X_TOTAL_COUNT ) }" );
+        Console.WriteLine( $"Header: { ethosResponse.GetHeader( EthosProxyClient.HDR_APPLICATION_CONTEXT ) }" );
+        Console.WriteLine( $"Header: { ethosResponse.GetHeader( EthosProxyClient.HDR_X_MAX_PAGE_SIZE ) }" );
+        Console.WriteLine( $"Header: { ethosResponse.GetHeader( EthosProxyClient.HDR_X_MEDIA_TYPE ) }" );
+        Console.WriteLine( $"Header: { ethosResponse.GetHeader( EthosProxyClient.HDR_HEDTECH_ETHOS_INTEGRATION_APPLICATION_ID ) }" );
+        Console.WriteLine( $"Header: { ethosResponse.GetHeader( EthosProxyClient.HDR_HEDTECH_ETHOS_INTEGRATION_APPLICATION_NAME ) }" );
+    }
+
+    #endregion
 }

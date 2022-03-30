@@ -18,6 +18,7 @@ public class EthosConfigurationClientExample : ExampleBase
     /// <returns>Task</returns>
     public static async Task Run()
     {
+        BuildConfigurationClient();
         await GetAllAvailableResourcesAsync();
         await GetAllAvailableResourcesJsonAsync();
         await FilterAvailableResourcesAsync();
@@ -38,44 +39,43 @@ public class EthosConfigurationClientExample : ExampleBase
         await GetVersionHeaderAsync_SemVer();
     }
 
-    private static EthosConfigurationClient client = new EthosClientBuilder( SAMPLE_API_KEY ).BuildEthosConfigurationClient();
 
     private async static Task FilterAvailableResourcesAsync()
     {
-        var response = await client.GetAllAvailableResourcesAsJsonAsync();
-        var filteredResponse = client.FilterAvailableResources( response, "persons" );
+        var response = await configurationClient.GetAllAvailableResourcesAsJsonAsync();
+        var filteredResponse = configurationClient.FilterAvailableResources( response, "persons" );
         Console.WriteLine( filteredResponse );
     }
 
     private async static Task GetAllAvailableResourcesAsync()
     {
-        var response = await client.GetAllAvailableResourcesAsync();
+        var response = await configurationClient.GetAllAvailableResourcesAsync();
         Console.WriteLine( response );
     }
 
     private async static Task GetAllAvailableResourcesJsonAsync()
     {
-        var response = await client.GetAllAvailableResourcesAsJsonAsync();
+        var response = await configurationClient.GetAllAvailableResourcesAsJsonAsync();
         var formattedString = response.ToString( formatting: Newtonsoft.Json.Formatting.Indented );
         Console.WriteLine( response );
     }
 
     private async static Task GetFiltersAndNamedQueriesAsync()
     {
-        var response = await client.GetFiltersAndNamedQueriesAsync( "persons" );
+        var response = await configurationClient.GetFiltersAndNamedQueriesAsync( "persons" );
         var formattedString = response.ToString( formatting: Newtonsoft.Json.Formatting.Indented );
         Console.WriteLine( formattedString );
     }
 
     private async static Task GetLatestVersionHeaderAsync()
     {
-        var latestVersion = await client.GetLatestVersionHeaderAsync( "persons" );
+        var latestVersion = await configurationClient.GetLatestVersionHeaderAsync( "persons" );
         Console.WriteLine( latestVersion );
     }
 
     private async static Task GetFiltersAsync()
     {
-        var filters = await client.GetFiltersAsync( "sections" );
+        var filters = await configurationClient.GetFiltersAsync( "sections" );
         filters.ToList().ForEach( i =>
         {
             Console.WriteLine( i );
@@ -84,7 +84,7 @@ public class EthosConfigurationClientExample : ExampleBase
 
     private async static Task GetNamedQueriesAsync()
     {
-        var queries = await client.GetNamedQueriesAsync( "sections" );
+        var queries = await configurationClient.GetNamedQueriesAsync( "sections" );
         queries.ToList().ForEach( i =>
         {
             Console.WriteLine( $"{ i.Key }\r\n" );
@@ -97,7 +97,7 @@ public class EthosConfigurationClientExample : ExampleBase
 
     private async static Task GetVersionHeadersForAppAsync()
     {
-        var response = await client.GetVersionHeadersForAppAsync( "persons" );
+        var response = await configurationClient.GetVersionHeadersForAppAsync( "persons" );
         response.Distinct().OrderByDescending( v => v ).ToList().ForEach( i =>
           {
               Console.WriteLine( $"Version Header: { i }" );
@@ -106,7 +106,7 @@ public class EthosConfigurationClientExample : ExampleBase
 
     private async static Task GetVersionsForAppAsync()
     {
-        var response = await client.GetVersionsForAppAsync( "academic-credentials" );
+        var response = await configurationClient.GetVersionsForAppAsync( "academic-credentials" );
         response.Distinct().OrderByDescending( v => v ).ToList().ForEach( i =>
         {
             Console.WriteLine( $"Version: { i }" );
@@ -115,7 +115,7 @@ public class EthosConfigurationClientExample : ExampleBase
 
     private async static Task GetMajorVersionsOfResourceAsync()
     {
-        var response = await client.GetMajorVersionsOfResourceAsync( "persons" );
+        var response = await configurationClient.GetMajorVersionsOfResourceAsync( "persons" );
         response.Distinct().OrderByDescending( v => v ).ToList().ForEach( i =>
         {
             Console.WriteLine( $"Major Version: { i }" );
@@ -127,13 +127,13 @@ public class EthosConfigurationClientExample : ExampleBase
         int patchVersion = 0;
         int minorVersion = 3;
         int majorVersion = 12;
-        var response = await client.IsResourceVersionSupportedAsync( "persons", patchVersion: patchVersion );
+        var response = await configurationClient.IsResourceVersionSupportedAsync( "persons", patchVersion: patchVersion );
         var isOrNot = response ? "is" : "not";
         Console.WriteLine( $"The version { patchVersion } { isOrNot } supported for persons" );
-        response = await client.IsResourceVersionSupportedAsync( "persons", minorVersion: minorVersion );
+        response = await configurationClient.IsResourceVersionSupportedAsync( "persons", minorVersion: minorVersion );
         isOrNot = response ? "is" : "not";
         Console.WriteLine( $"The version { minorVersion } { isOrNot } supported for persons" );
-        response = await client.IsResourceVersionSupportedAsync( "persons", majorVersion: majorVersion );
+        response = await configurationClient.IsResourceVersionSupportedAsync( "persons", majorVersion: majorVersion );
         isOrNot = response ? "is" : "not";
         Console.WriteLine( $"The version { majorVersion } { isOrNot } supported for persons" );
     }
@@ -141,7 +141,7 @@ public class EthosConfigurationClientExample : ExampleBase
     private async static Task IsResourceVersionSupported_FullHeader()
     {
         string fullHeader = "application/vnd.hedtech.integration.v12.3.0+json";
-        var response = await client.IsResourceVersionSupportedAsync( "persons", fullHeader );
+        var response = await configurationClient.IsResourceVersionSupportedAsync( "persons", fullHeader );
         var isOrNot = response ? "is" : "not";
         Console.WriteLine( $"The version { fullHeader } { isOrNot } supported for persons" );
 
@@ -150,14 +150,14 @@ public class EthosConfigurationClientExample : ExampleBase
     private async static Task IsResourceVersionSupportedAsync_SemVer()
     {
         SemVer semVer = new SemVer() { Major = 12, Minor = 3, Patch = 0 };
-        var response = await client.IsResourceVersionSupportedAsync( "persons", semVer );
+        var response = await configurationClient.IsResourceVersionSupportedAsync( "persons", semVer );
         var isOrNot = response ? "is" : "not";
         Console.WriteLine( $"The version { semVer.Major }.{semVer.Minor}.{semVer.Patch} { isOrNot } supported for persons" );
 
     }
     private static async Task GetVersionHeadersOfResourceAsStringsAsync()
     {
-        var response = await client.GetVersionHeadersOfResourceAsStringsAsync( "persons)" );
+        var response = await configurationClient.GetVersionHeadersOfResourceAsStringsAsync( "persons)" );
         foreach ( var item in response )
         {
             Console.WriteLine( $"Version header: {item}" );
@@ -166,20 +166,20 @@ public class EthosConfigurationClientExample : ExampleBase
 
     private static async Task GetVersionHeadersOfResourceAsync()
     {
-        var response = await client.GetVersionHeadersOfResourceAsync( "persons" );
+        var response = await configurationClient.GetVersionHeadersOfResourceAsync( "persons" );
         Console.WriteLine( response.ToString() );
     }
 
     private static async Task GetVersionHeaderAsync()
     {
-        var response = await client.GetVersionHeaderAsync( "persons", 12, 3, 0 );
+        var response = await configurationClient.GetVersionHeaderAsync( "persons", 12, 3, 0 );
         Console.WriteLine( response );
     }
 
     private static async Task GetVersionHeaderAsync_SemVer()
     {
         SemVer semVer = new SemVer() { Major = 12, Minor = 3, Patch = 0 };
-        var response = await client.GetVersionHeaderAsync( "persons", semVer );
+        var response = await configurationClient.GetVersionHeaderAsync( "persons", semVer );
         Console.WriteLine( response );
     }
 }

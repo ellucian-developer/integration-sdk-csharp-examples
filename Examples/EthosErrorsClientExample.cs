@@ -23,6 +23,7 @@ public class EthosErrorsClientExample : ExampleBase
     /// <returns></returns>
     public static async Task Run()
     {
+        BuildEthosErrorsClient();
         await GetErrorHeadersAsync();
         await GetErrorsAsync();
         await GetErrorsAsJArrayAsync();
@@ -46,20 +47,12 @@ public class EthosErrorsClientExample : ExampleBase
         await GetErrorsFromOffsetWithPageSizeAsync();
     }
 
-    private static EthosErrorsClient ethosErrorsClient = GetEthosErrorsClient();
-    private static EthosErrorsClient GetEthosErrorsClient()
-    {
-        return new EthosClientBuilder( SAMPLE_API_KEY )
-                   .WithConnectionTimeout( 30 )
-                   .BuildEthosErrorsClient();
-    }
-
     private static async Task GetErrorHeadersAsync()
     {
         Console.WriteLine( "******* ethosErrorClient.GetHeader() *******" );
         try
         {
-            EthosResponse ethosResponse = await ethosErrorsClient.GetAsync();
+            EthosResponse ethosResponse = await errorsClient.GetAsync();
             var headerMap = ethosResponse.HeadersMap;
             var headers = headerMap.ToDictionary( a => a.Key, a => string.Join( ";", a.Value ) );
 
@@ -80,7 +73,7 @@ public class EthosErrorsClientExample : ExampleBase
         Console.WriteLine( "******* ethosErrorClient.GetAsync() *******" );
         try
         {
-            EthosResponse ethosResponse = await ethosErrorsClient.GetAsync();
+            EthosResponse ethosResponse = await errorsClient.GetAsync();
             string totalCountHeader = ethosResponse.GetHeader( EthosErrorsClient.HDR_TOTAL_COUNT );
             string remainingCountHeader = ethosResponse.GetHeader( EthosErrorsClient.HDR_REMAINING_COUNT );
             Console.WriteLine( $"TOTAL ERROR COUNT: {totalCountHeader}" );
@@ -104,7 +97,7 @@ public class EthosErrorsClientExample : ExampleBase
         Console.WriteLine( "******* ethosErrorClient.GetAsJArrayAsync() *******" );
         try
         {
-            var errorsNode = await ethosErrorsClient.GetAsJArrayAsync();
+            var errorsNode = await errorsClient.GetAsJArrayAsync();
             var errorsIter = errorsNode.GetEnumerator();
             while ( errorsIter.MoveNext() )
             {
@@ -123,7 +116,7 @@ public class EthosErrorsClientExample : ExampleBase
         Console.WriteLine( "******* ethosErrorClient.GetAsEthosErrorsAsync *******" );
         try
         {
-            var ethosErrorList = await ethosErrorsClient.GetAsEthosErrorsAsync();
+            var ethosErrorList = await errorsClient.GetAsEthosErrorsAsync();
             Console.WriteLine( $"NUMBER OF ERRORS: {ethosErrorList.Count()}" );
             foreach ( EthosError ethosError in ethosErrorList )
             {
@@ -141,7 +134,7 @@ public class EthosErrorsClientExample : ExampleBase
         Console.WriteLine( "******* ethosErrorClient.GetAllErrorsAsEthosErrorsAsync *******" );
         try
         {
-            var ethosErrorList = await ethosErrorsClient.GetAllErrorsAsEthosErrorsAsync();
+            var ethosErrorList = await errorsClient.GetAllErrorsAsEthosErrorsAsync();
             Console.WriteLine( $"NUMBER OF ERRORS: {ethosErrorList.Count()}" );
             foreach ( EthosError ethosError in ethosErrorList )
             {
@@ -159,7 +152,7 @@ public class EthosErrorsClientExample : ExampleBase
         Console.WriteLine( "******* ethosErrorClient.GetErrorsFromOffsetAsEthosErrorsAsync *******" );
         try
         {
-            var ethosErrorList = await ethosErrorsClient.GetErrorsFromOffsetAsEthosErrorsAsync( 5 );
+            var ethosErrorList = await errorsClient.GetErrorsFromOffsetAsEthosErrorsAsync( 5 );
             Console.WriteLine( $"NUMBER OF ERRORS: {ethosErrorList.Count()}" );
             foreach ( EthosError ethosError in ethosErrorList )
             {
@@ -177,7 +170,7 @@ public class EthosErrorsClientExample : ExampleBase
         Console.WriteLine( "******* ethosErrorClient.GetAsStringAsync() *******" );
         try
         {
-            string errorsStr = await ethosErrorsClient.GetAsStringAsync();
+            string errorsStr = await errorsClient.GetAsStringAsync();
             Console.WriteLine( errorsStr );
         }
         catch ( Exception ioe )
@@ -193,7 +186,7 @@ public class EthosErrorsClientExample : ExampleBase
         {
             if ( !string.IsNullOrWhiteSpace( RECORD_GUID ) )
             {
-                EthosResponse ethosResponse = await ethosErrorsClient.GetByIdAsync( RECORD_GUID );
+                EthosResponse ethosResponse = await errorsClient.GetByIdAsync( RECORD_GUID );
                 Console.WriteLine( ethosResponse.Content );
             }
             else
@@ -214,7 +207,7 @@ public class EthosErrorsClientExample : ExampleBase
         {
             if ( !string.IsNullOrWhiteSpace( RECORD_GUID ) )
             {
-                EthosError ethosError = await ethosErrorsClient.GetByIdAsEthosErrorAsync( RECORD_GUID );
+                EthosError ethosError = await errorsClient.GetByIdAsEthosErrorAsync( RECORD_GUID );
                 Console.WriteLine( ethosError.ToString() );
             }
             else
@@ -235,7 +228,7 @@ public class EthosErrorsClientExample : ExampleBase
         {
             if ( !string.IsNullOrWhiteSpace( RECORD_GUID ) )
             {
-                var errorNode = await ethosErrorsClient.GetByIdAsJObjectAsync( RECORD_GUID );
+                var errorNode = await errorsClient.GetByIdAsJObjectAsync( RECORD_GUID );
                 Console.WriteLine( errorNode.ToString() );
             }
             else
@@ -256,7 +249,7 @@ public class EthosErrorsClientExample : ExampleBase
         {
             if ( !string.IsNullOrWhiteSpace( RECORD_GUID ) )
             {
-                string errorStr = await ethosErrorsClient.GetByIdAsStringAsync( RECORD_GUID );
+                string errorStr = await errorsClient.GetByIdAsStringAsync( RECORD_GUID );
                 Console.WriteLine( errorStr );
             }
             else
@@ -294,7 +287,7 @@ public class EthosErrorsClientExample : ExampleBase
         {
             EthosError ethosError = ErrorFactory.CreateErrorFromJson( errorStr );
             Console.WriteLine( "CREATING ETHOS ERROR: " + ethosError.ToString() );
-            EthosResponse errorResponse = await ethosErrorsClient.PostAsync( ethosError );
+            EthosResponse errorResponse = await errorsClient.PostAsync( ethosError );
             Console.WriteLine( $"Created Ethos Error: {errorResponse.Content}" );
         }
         catch ( Exception ioe )
@@ -308,7 +301,7 @@ public class EthosErrorsClientExample : ExampleBase
         Console.WriteLine( "******* ethosErrorClient.GetTotalErrorCountAsync() *******" );
         try
         {
-            int totalErrorCount = await ethosErrorsClient.GetTotalErrorCountAsync();
+            int totalErrorCount = await errorsClient.GetTotalErrorCountAsync();
             Console.WriteLine( $"TOTAL ERROR COUNTER: {totalErrorCount}" );
         }
         catch ( Exception ioe )
@@ -329,7 +322,7 @@ public class EthosErrorsClientExample : ExampleBase
         Console.WriteLine( "******* ethosErrorClient.GetAllErrorsAsync() *******" );
         try
         {
-            List<EthosResponse> ethosResponseList = ( await ethosErrorsClient.GetAllErrorsAsync() ).ToList();
+            List<EthosResponse> ethosResponseList = ( await errorsClient.GetAllErrorsAsync() ).ToList();
             for ( int i = 0; i < ethosResponseList.Count; i++ )
             {
                 Console.WriteLine( $"ERROR PAGE {( i + 1 )}, REQUESTED URL: {ethosResponseList [ i ].RequestedUrl}, ERROR PAGE DETAILS: {ethosResponseList [ i ].Content}" );
@@ -346,7 +339,7 @@ public class EthosErrorsClientExample : ExampleBase
         Console.WriteLine( "******* ethosErrorClient.GetAllErrorsAsJArrayAsync() *******" );
         try
         {
-            List<JArray> jsonNodePageList = ( await ethosErrorsClient.GetAllErrorsAsJArrayAsync() ).ToList();
+            List<JArray> jsonNodePageList = ( await errorsClient.GetAllErrorsAsJArrayAsync() ).ToList();
             for ( int pageCount = 0; pageCount < jsonNodePageList.Count; pageCount++ )
             {
                 JArray jsonNodePage = jsonNodePageList [ pageCount ];
@@ -368,7 +361,7 @@ public class EthosErrorsClientExample : ExampleBase
         Console.WriteLine( "******* ethosErrorClient.getAllErrorsAsStrings() *******" );
         try
         {
-            List<string> errorsStringList = ( await ethosErrorsClient.GetAllErrorsAsStringsAsync() ).ToList();
+            List<string> errorsStringList = ( await errorsClient.GetAllErrorsAsStringsAsync() ).ToList();
             for ( int i = 0; i < errorsStringList.Count; i++ )
             {
                 Console.WriteLine( $"ERROR PAGE {( i + 1 )}, ERROR PAGE DETAILS: {errorsStringList [ i ]}" );
@@ -386,7 +379,7 @@ public class EthosErrorsClientExample : ExampleBase
         int pageSize = 15;
         try
         {
-            var jsonNodePageList = ( await ethosErrorsClient.GetAllErrorsWithPageSizeAsJArraysAsync( pageSize ) ).ToList();
+            var jsonNodePageList = ( await errorsClient.GetAllErrorsWithPageSizeAsJArraysAsync( pageSize ) ).ToList();
             for ( int pageCount = 0; pageCount < jsonNodePageList.Count; pageCount++ )
             {
                 JArray jsonNodePage = jsonNodePageList [ pageCount ];
@@ -410,13 +403,13 @@ public class EthosErrorsClientExample : ExampleBase
         try
         {
             int pageSize = 15;
-            int totalCount = await ethosErrorsClient.GetTotalErrorCountAsync();
+            int totalCount = await errorsClient.GetTotalErrorCountAsync();
             // Calculate the offset to be 95% of the totalCount to avoid paging through potentially tons of errors.
             int offset = ( int ) ( totalCount * 0.95 );
             double expectedNumPages = Math.Ceiling( ( Convert.ToDouble( totalCount ) - Convert.ToDouble( offset ) ) / Convert.ToDouble( pageSize ) );
             Console.WriteLine( string.Format( "Calculated offset of {} which is 95 percent of a total count of {} to avoid paging through potentially lots of errors.", offset, totalCount ) );
             Console.WriteLine( "To run with more paging, manually set the offset to a lower value, or reduce the percentage of the total count." );
-            List<EthosResponse> ethosResponseList = ( await ethosErrorsClient.GetErrorsFromOffsetWithPageSizeAsync( offset, pageSize ) ).ToList();
+            List<EthosResponse> ethosResponseList = ( await errorsClient.GetErrorsFromOffsetWithPageSizeAsync( offset, pageSize ) ).ToList();
             Console.WriteLine( $"FROM OFFSET: {offset}, EXPECTED NUMBER OF PAGES: {expectedNumPages}, NUMBER OF PAGES RETURNED: {ethosResponseList.Count}" );
             for ( int pageCount = 0; pageCount < ethosResponseList.Count(); pageCount++ )
             {
