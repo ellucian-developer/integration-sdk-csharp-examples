@@ -398,9 +398,9 @@ public class EthosFilterQueryClientExample : ExampleBase
         {
             var criteriaFilter = new CriteriaFilter().WithArray( criteriaSetName, (criteriaKey, criteriaValue) );
             Console.WriteLine( criteriaFilter.BuildCriteria() );
-            List<EthosResponse> ethosResponseList = await filterClient.GetPagesWithCriteriaFilterAsync( resource, version, criteriaFilter, pageSize ) as List<EthosResponse>;
-            Console.WriteLine( $"Number of pages returned: {ethosResponseList.Count}" );
-            foreach ( EthosResponse ethosResponse in ethosResponseList )
+            List<EthosResponse>? ethosResponseList = await filterClient.GetPagesWithCriteriaFilterAsync( resource, version, criteriaFilter, pageSize ) as List<EthosResponse>;
+            Console.WriteLine( $"Number of pages returned: {ethosResponseList?.Count}" );
+            foreach ( EthosResponse ethosResponse in ethosResponseList! )
             {
                 Console.WriteLine( $"REQUESTED URL: { ethosResponse.RequestedUrl }" );
                 Console.WriteLine( $"Number of resources returned: { ethosResponse.GetContentCount() }" );
@@ -426,10 +426,10 @@ public class EthosFilterQueryClientExample : ExampleBase
         try
         {
             var criteriaFilter = new CriteriaFilter().WithArray( criteriaSetName, (criteriaKey, criteriaValue) );
-            List<EthosResponse> ethosResponseList = await filterClient.GetPagesFromOffsetWithCriteriaFilterAsync( resource, version, criteriaFilter, pageSize, offset ) as List<EthosResponse>;
-            Console.WriteLine( $"Number of pages returned: {ethosResponseList.Count}" );
+            List<EthosResponse>? ethosResponseList = await filterClient.GetPagesFromOffsetWithCriteriaFilterAsync( resource, version, criteriaFilter, pageSize, offset ) as List<EthosResponse>;
+            Console.WriteLine( $"Number of pages returned: {ethosResponseList?.Count}" );
             Console.WriteLine( $"OFFSET: { offset }" );
-            foreach ( EthosResponse ethosResponse in ethosResponseList )
+            foreach ( EthosResponse ethosResponse in ethosResponseList! )
             {
                 Console.WriteLine( $"REQUESTED URL: { ethosResponse.RequestedUrl }" );
                 Console.WriteLine( $"Number of resources returned: { ethosResponse.GetContentCount() }" );
@@ -455,9 +455,9 @@ public class EthosFilterQueryClientExample : ExampleBase
             FilterMap filterMap = new FilterMap()
                                       .WithParameterPair( filterMapKey, filterMapValue )
                                       .Build();
-            List<EthosResponse> ethosResponseList = await filterClient.GetPagesWithFilterMapAsync( resource, version, filterMap, pageSize ) as List<EthosResponse>;
-            Console.WriteLine( $"Number of pages returned: {ethosResponseList.Count}" );
-            foreach ( EthosResponse ethosResponse in ethosResponseList )
+            List<EthosResponse>? ethosResponseList = await filterClient.GetPagesWithFilterMapAsync( resource, version, filterMap, pageSize ) as List<EthosResponse>;
+            Console.WriteLine( $"Number of pages returned: {ethosResponseList?.Count}" );
+            foreach ( EthosResponse ethosResponse in ethosResponseList! )
             {
                 Console.WriteLine( $"REQUESTED URL: { ethosResponse.RequestedUrl }" );
                 Console.WriteLine( $"Number of resources returned: { ethosResponse.GetContentCount() }" );

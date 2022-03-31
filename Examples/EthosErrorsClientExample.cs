@@ -346,7 +346,7 @@ public class EthosErrorsClientExample : ExampleBase
                 for ( int errorCount = 0; errorCount < jsonNodePage.Count; errorCount++ )
                 {
                     var errorNode = jsonNodePage [ errorCount ];
-                    Console.WriteLine( $"ERROR PAGE {( pageCount + 1 )}, ERROR COUNT: {( errorCount + 1 )}, ERROR ID: {errorNode.SelectToken( "id" ).ToString()}, SEVERITY: {errorNode.SelectToken( "severity" ).ToString()}, DESCRIPTION: {errorNode.SelectToken( "description" ).ToString()}" );
+                    Console.WriteLine( $"ERROR PAGE {( pageCount + 1 )}, ERROR COUNT: {( errorCount + 1 )}, ERROR ID: {errorNode?.SelectToken( "id" )?.ToString()}, SEVERITY: {errorNode?.SelectToken( "severity" )?.ToString()}, DESCRIPTION: {errorNode?.SelectToken( "description" )?.ToString()}" );
                 }
             }
         }
@@ -386,7 +386,7 @@ public class EthosErrorsClientExample : ExampleBase
                 for ( int errorCount = 0; errorCount < jsonNodePage.Count; errorCount++ )
                 {
                     var errorNode = jsonNodePage [ errorCount ];
-                    Console.WriteLine( $"ERROR PAGE {pageCount + 1}, SPECIFIED PAGE SIZE: {pageSize}, RETURNED PAGE SIZE: {jsonNodePage.Count}, ERROR COUNT: {( errorCount + 1 )}, ERROR ID: {errorNode.SelectToken( "id" ).ToString()}, SEVERITY: {errorNode.SelectToken( "severity" ).ToString()}, DESCRIPTION: {errorNode.SelectToken( "description" ).ToString()}" );
+                    Console.WriteLine( $"ERROR PAGE {pageCount + 1}, SPECIFIED PAGE SIZE: {pageSize}, RETURNED PAGE SIZE: {jsonNodePage.Count}, ERROR COUNT: {( errorCount + 1 )}, ERROR ID: {errorNode?.SelectToken( "id" )?.ToString()}, SEVERITY: {errorNode?.SelectToken( "severity" )?.ToString()}, DESCRIPTION: {errorNode?.SelectToken( "description" )?.ToString()}" );
                 }
             }
         }
