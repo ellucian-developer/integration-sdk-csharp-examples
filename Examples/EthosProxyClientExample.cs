@@ -6,6 +6,8 @@
 
 using Ellucian.Ethos.Integration.Client;
 using Ellucian.Ethos.Integration.Client.Proxy;
+using Ellucian.Generated.BpApi.TermCodesV100GetRequest;
+using Ellucian.Generated.Eedm;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -34,6 +36,7 @@ public class EthosProxyClientExample : ExampleBase
     /// <returns></returns>
     public static async Task Run()
     {
+        BuildEthosProxyClient();
         await DoGetResourceByIdExample();
         await DoGetResourceAsStringByIdExample();
         await DoGetResourceAsJsonByIdExample();
@@ -62,6 +65,11 @@ public class EthosProxyClientExample : ExampleBase
         await DoGetRowsFromOffsetAsJsonsExample();
         await DoSimplePersonsIterationExample();
         await DoCrudExample();
+
+        await DoGetStudentCohortAsync();
+        await DoGetRowsAsJsonStronglyTypedExample();
+        await DoFullCrudWithStronglyTypedAsync();
+        await DoGetTermCodesAsync();
     }
 
     #region All examples
@@ -846,6 +854,158 @@ public class EthosProxyClientExample : ExampleBase
             Console.WriteLine( $"{fullName} has a person ID of {id}" );
         }
     }
+
+    /// <summary>
+    /// GET example for student-cohorts
+    /// </summary>
+    /// <returns></returns>
+    private static async Task DoGetStudentCohortAsync()
+    {
+        try
+        {
+            var response = await proxyClient.GetAsync<IEnumerable<StudentCohorts_V7_2_0>>( "student-cohorts" );
+
+            if ( response != null )
+            {
+                Console.WriteLine( "" );
+                Console.WriteLine( string.Format( "{0, -40} {1, -20}{2, -11}{3, -40}{4, -60}", "ID", "COHORT-TYPE", "CODE", "TITLE", "DESCRIPTION" ) );
+                foreach ( StudentCohorts_V7_2_0 item in response.Dto )
+                {
+                    Console.WriteLine( string.Format( "{0, -40} {1, -20}{2, -11}{3, -40}{4, -60}", item.Id, item.StudentCohortType.ToString().Trim(), item.Code.Trim(), item.Title.Trim(), item.Description ?? "No Description" ) );
+                }
+            }
+        }
+        catch ( Exception ex )
+        {
+            Console.WriteLine( "An error occured while performing the GET ", ex.Message );
+            Console.WriteLine( ex.StackTrace );
+        }
+    }
+
+    /// <summary>
+    /// DoGetRowsAsJsonsExample
+    /// </summary>
+    /// <returns></returns>
+    private static async Task DoGetRowsAsJsonStronglyTypedExample()
+    {
+        try
+        {
+            string resourceName = "term-codes";
+            string version = "application/json";
+            int numRows = 10;
+            var jsonNode = await proxyClient.GetRowsAsJArrayAsync( resourceName, version, numRows );
+            var termCodes = JsonConvert.DeserializeObject <IEnumerable<TermCodesV100GetRequest>>( jsonNode.ToString() );
+            Console.WriteLine( "******* Get some number of rows as JSON and convert to strongly typed objects example. *******" );
+            Console.WriteLine( $"Get data for resource: { resourceName }" );
+            Console.WriteLine( $"NUM ROWS: { termCodes!.ToArray().Count() }" );
+        }
+        catch ( Exception e )
+        {
+            Console.WriteLine( e.Message );
+        }
+    }
+
+    /// <summary>
+    /// Person holds full CRUD example.
+    /// </summary>
+    /// <returns></returns>
+    private static async Task DoFullCrudWithStronglyTypedAsync()
+    {
+        try
+        {
+            Persons_V12_3_0? person = await GetPersonAsync();
+            string? personId = person?.Id.ToString();
+
+            // Populate person holds record.
+            PersonHolds_V6_0 personHold1 = new PersonHolds_V6_0
+            {
+                Id = "00000000-0000-0000-0000-000000000000",
+                StartOn = DateTimeOffset.Now,
+                Person = new GuidObject2 { Id = personId! },
+                PersonHoldTypeType = new PersonHoldTypeType() { PersonHoldCategory = PersonHoldCategoryTypes.Financial }
+            };
+
+            // POST
+            EthosResponse response = await proxyClient.PostAsync<PersonHolds_V6_0>( "person-holds", personHold1 );
+
+            // PRINT
+            var dto = response.Dto as PersonHolds_V6_0;
+            Console.WriteLine( "Created a 'person-holds' record:" );
+            Console.WriteLine( dto!.Id );
+            Console.WriteLine();
+
+            string newId = response.Dto.Id.ToString();
+            DateTimeOffset newHoldEnd = DateTimeOffset.Now.AddDays( 1 );
+            personHold1.StartOn = newHoldEnd;
+            // PUT
+            response = await proxyClient.PutAsync<PersonHolds_V6_0>( "person-holds", dto, newId );
+            Console.WriteLine( $"Successfully updated person-holds record {newId}" );
+
+            // DELETE
+            await proxyClient.DeleteAsync( "person-holds", newId );
+            Console.WriteLine( $"Successfully deleted person-holds record {newId}" );
+
+            // attempt to get the formerly created, now deleted, record, and make sure it is no longer there.
+            try
+            {
+                await proxyClient.GetByIdAsync( "person-holds", newId );
+            }
+            catch
+            {
+                Console.WriteLine( $"Failed to get person-holds record {newId}.  The delete was successful." );
+            }
+
+        }
+        catch ( Exception e )
+        {
+            Console.WriteLine( "An error occured while performing the update ", e.Message );
+            Console.WriteLine( e.StackTrace );
+        }
+    }
+
+    /// <summary>
+    /// How to perform http GET using a strongly typed object.
+    /// </summary>
+    /// <returns></returns>
+    private static async Task DoGetTermCodesAsync()
+    {
+        try
+        {
+            var response = await proxyClient.GetAsync<IEnumerable<TermCodesV100GetRequest>>( "term-codes" );
+
+            if ( response != null )
+            {
+                Console.WriteLine( "" );
+                foreach ( var item in ( IEnumerable<TermCodesV100GetRequest> ) response.Dto )
+                {
+                    Console.WriteLine( $"Activity Date: { item.ActivityDate }, CODE: { item.Code }, DESC: { item.Desc } " );
+                }
+            }
+        }
+        catch ( Exception ex )
+        {
+            Console.WriteLine( ex.Message );
+        }
+    }
+
+    /// <summary>
+    /// Helper method using GET to retrieve collection of person records and choosing a random records from the collection.
+    /// </summary>
+    /// <returns></returns>
+    private static async Task<Persons_V12_3_0> GetPersonAsync()
+    {
+        Random random = new();
+        int num = random.Next( 0, 499 );
+        EthosResponse responses = await proxyClient.GetAsync<IEnumerable<Persons_V12_3_0>>( "persons", "", num, 1 );
+        Persons_V12_3_0? person = ( responses.Dto as IEnumerable<Persons_V12_3_0> )!.FirstOrDefault();
+        return person!;
+    }
+
+    private static void Print( string exampleNumber, string filter )
+    {
+        Console.WriteLine( $"{exampleNumber}\t: {filter}" );
+    }
+
     #endregion
 
     #region Helper Method

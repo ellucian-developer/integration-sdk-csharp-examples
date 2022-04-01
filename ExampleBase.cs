@@ -8,7 +8,6 @@ using Ellucian.Ethos.Integration.Client;
 using Ellucian.Ethos.Integration.Client.Errors;
 using Ellucian.Ethos.Integration.Client.Proxy;
 using Ellucian.Ethos.Integration.Config;
-using Ellucian.Ethos.Integration.StronglyTyped.Colleague.Example;
 
 namespace Ellucian.Examples;
 public class ExampleBase
@@ -24,9 +23,6 @@ public class ExampleBase
     public static async Task Run( string apiKey )
     {
         SAMPLE_API_KEY = apiKey;
-        await RunEEDMExamplesAsync();
-        await RunBannerBPAPIExamplesAsync();
-        await RunColleagueBPAPIExamplesAsync();
         await RunProxyClientExampleAsync();
         await RunMessageClientExampleAsync();
         await RunFilterQueryClientExampleAsync();
@@ -38,23 +34,6 @@ public class ExampleBase
     }
 
     #region Examples
-    private static async Task RunEEDMExamplesAsync()
-    {
-        Console.WriteLine( "---------------------------------- RunEEDMExamplesAsync ----------------------------------" );
-        await EEDMExample.Run();
-    }
-
-    private static async Task RunBannerBPAPIExamplesAsync()
-    {
-        Console.WriteLine( "---------------------------------- RunBannerBPAPIExamplesAsync ----------------------------------" );
-        await BannerBPAPIExample.Run();
-    }
-
-    private static async Task RunColleagueBPAPIExamplesAsync()
-    {
-        Console.WriteLine( "---------------------------------- RunColleagueBPAPIExamplesAsync ----------------------------------" );
-        await ColleagueBPAPIExample.Run();
-    }
 
     private static async Task RunProxyClientExampleAsync()
     {
