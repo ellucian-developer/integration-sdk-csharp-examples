@@ -550,13 +550,8 @@ public class EthosFilterQueryClientExample : ExampleBase
             PersonCommentsV100PutRequest putReq = new PersonCommentsV100PutRequest()
             {
                 Id = searchedRecord.Id,
-                CmttCode = "100",
-                ConfidentialInd = "s",
-                ContactDate = DateTime.Now,
-                Date = DateTime.Now,
-                OrigCode = "CCON",
-                Text = $"PUT comment 2 from C-SHarp SDK Example. PERSON RECORD: { searchedRecord.Id }: { searchedRecord.LastName }, { searchedRecord.FirstName }",
-                TextNar = "Testing through C-Sharp SDK"
+                ContactDate = DateTime.Now.AddDays(1),
+                Text = $"Updating comment from C-Sharp SDK. PERSON RECORD: { searchedRecord.Id }: { searchedRecord.LastName }, { searchedRecord.FirstName }, { DateTime.Now.AddDays(1) }"
             };
 
             //Perform PUT
