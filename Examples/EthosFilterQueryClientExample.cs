@@ -48,8 +48,8 @@ public class EthosFilterQueryClientExample : ExampleBase
         await GetPagesUsingFilterMapValuesAsync();
         await GetPagesUsingNamedQueryAsync();
         await ExampleFullCrudWithStronglyTypedBpAPiAsync();
-        await DoGetQapiEEDMExampleAsync();
-        await DoGetQapiBpApiExampleAsync();
+        await DoPostQapiEEDMExampleAsync();
+        await DoPostQapiBpApiExampleAsync();
     }
 
     #region All Examples
@@ -607,7 +607,7 @@ public class EthosFilterQueryClientExample : ExampleBase
     /// How to call QAPI EEDM end point using POST.
     /// </summary>
     /// <returns></returns>
-    private static async Task DoGetQapiEEDMExampleAsync()
+    private static async Task DoPostQapiEEDMExampleAsync()
     {
         string resource = "persons";
         string version = "application/vnd.hedtech.integration.v12+json";
@@ -628,7 +628,7 @@ public class EthosFilterQueryClientExample : ExampleBase
     /// How to call QAPI BPAPI end point using POST.
     /// </summary>
     /// <returns></returns>
-    private static async Task DoGetQapiBpApiExampleAsync()
+    private static async Task DoPostQapiBpApiExampleAsync()
     {
         string resource = "term-codes";
         string version = "application/vnd.hedtech.integration.v1.0.0+json";
