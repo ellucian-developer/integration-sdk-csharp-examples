@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "Ellucian.Ethos.Integration/0.3.0": {
+      "Ellucian.Ethos.Integration/0.4.2": {
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection": "6.0.0",
           "Microsoft.Extensions.Http": "6.0.0",
@@ -113,7 +113,7 @@
     }
   },
   "libraries": {
-    "Ellucian.Ethos.Integration/0.3.0": {
+    "Ellucian.Ethos.Integration/0.4.2": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

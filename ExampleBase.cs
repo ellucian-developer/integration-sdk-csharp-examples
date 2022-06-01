@@ -12,12 +12,12 @@ using Ellucian.Ethos.Integration.Config;
 namespace Ellucian.Examples;
 public class ExampleBase
 {
-    internal protected static string SAMPLE_API_KEY = string.Empty;
-    internal protected static string RECORD_GUID = string.Empty;
-    internal protected static EthosProxyClient proxyClient = default!;
-    internal protected static EthosFilterQueryClient filterClient = default!;
-    internal protected static EthosErrorsClient errorsClient = default!;
-    internal protected static EthosConfigurationClient configurationClient = default!;
+    internal static string SAMPLE_API_KEY = string.Empty;
+    internal static string RECORD_GUID = string.Empty;
+    internal static EthosProxyClient proxyClient = default!;
+    internal static EthosFilterQueryClient filterClient = default!;
+    internal static EthosErrorsClient errorsClient = default!;
+    internal static EthosConfigurationClient configurationClient = default!;
     private static EthosClientBuilder ethosClientBuilder = default!;
 
     public static async Task Run( string apiKey )
@@ -50,35 +50,30 @@ public class ExampleBase
     private static async Task RunFilterQueryClientExampleAsync()
     {
         Console.WriteLine( "---------------------------------- RunFilterQueryClientExampleAsync ----------------------------------" );
-
         await EthosFilterQueryClientExample.Run();
     }
 
     private static async Task RunGetAccessTokenExampleAsync()
     {
         Console.WriteLine( "---------------------------------- RunGetAccessTokenExampleAsync ----------------------------------" );
-
         await GetAccessTokenExample.Run();
     }
 
     private static async Task RunEthosErrorsClientExampleAsync()
     {
         Console.WriteLine( "---------------------------------- RunEthosErrorsClientExampleAsync ----------------------------------" );
-
         await EthosErrorsClientExample.Run();
     }
 
     private static async Task RunEthosConfigurationClientExampleAsync()
     {
         Console.WriteLine( "---------------------------------- RunEthosConfigurationClientExampleAsync ----------------------------------" );
-
         await EthosConfigurationClientExample.Run();
     }
 
     private static async Task RunEthosChangeNotificationSubscriberExampleAsync()
     {
         Console.WriteLine( "---------------------------------- RunEthosChangeNotificationSubscriberExampleAsync ----------------------------------" );
-
         await EthosChangeNotificationSubscriberExample.Run();
     }
 
@@ -94,27 +89,26 @@ public class ExampleBase
 
     internal static EthosClientBuilder GetEthosClientBuilder()
     {
-        return ethosClientBuilder = ethosClientBuilder ?? new EthosClientBuilder( SAMPLE_API_KEY ).WithConnectionTimeout( 240 );
+        return ethosClientBuilder ??= new EthosClientBuilder( SAMPLE_API_KEY ).WithConnectionTimeout( 240 );
     }
 
     internal static void BuildEthosProxyClient()
     {
-        proxyClient = proxyClient ?? GetEthosClientBuilder().BuildEthosProxyClient();
+        proxyClient ??= GetEthosClientBuilder().BuildEthosProxyClient();
     }
-
 
     internal static void BuildEthosFilterClient()
     {
-        filterClient = filterClient ?? GetEthosClientBuilder().WithConnectionTimeout( 240 ).BuildEthosFilterQueryClient();
+        filterClient ??= GetEthosClientBuilder().WithConnectionTimeout( 240 ).BuildEthosFilterQueryClient();
     }
     internal static void BuildEthosErrorsClient()
     {
-        errorsClient = errorsClient ?? GetEthosClientBuilder().WithConnectionTimeout( 240 ).BuildEthosErrorsClient();
+        errorsClient ??= GetEthosClientBuilder().WithConnectionTimeout( 240 ).BuildEthosErrorsClient();
     }
 
     internal static void BuildConfigurationClient()
     {
-        configurationClient = configurationClient ?? GetEthosClientBuilder().WithConnectionTimeout( 240 ).BuildEthosConfigurationClient();
+        configurationClient ??= GetEthosClientBuilder().WithConnectionTimeout( 240 ).BuildEthosConfigurationClient();
     }
 
     internal static int GetRandomNumber( int totalNumRecords )

@@ -13,6 +13,10 @@ using Ellucian.Generated.BpApi.PersonCommentsV100PostResponse;
 using Ellucian.Generated.BpApi.PersonCommentsV100PutRequest;
 using Ellucian.Generated.BpApi.PersonCommentsV100PutResponse;
 using Ellucian.Generated.BpApi.PersonSearchV100GetRequest;
+using Ellucian.Generated.BpApi.TermCodesV100GetRequest;
+using Ellucian.Generated.BpApi.TermCodesV100GetResponse;
+
+using Newtonsoft.Json;
 
 namespace Ellucian.Examples;
 
@@ -44,6 +48,8 @@ public class EthosFilterQueryClientExample : ExampleBase
         await GetPagesUsingFilterMapValuesAsync();
         await GetPagesUsingNamedQueryAsync();
         await ExampleFullCrudWithStronglyTypedBpAPiAsync();
+        await DoGetQapiEEDMExampleAsync();
+        await DoGetQapiBpApiExampleAsync();
     }
 
     #region All Examples
@@ -595,6 +601,67 @@ public class EthosFilterQueryClientExample : ExampleBase
         {
             Console.WriteLine(ex.Message);
         }
+    }
+
+    /// <summary>
+    /// How to call QAPI EEDM end point using POST.
+    /// </summary>
+    /// <returns></returns>
+    private static async Task DoGetQapiEEDMExampleAsync()
+    {
+        string resource = "persons";
+        string version = "application/vnd.hedtech.integration.v12+json";
+        string requestBody = GetPersonRequestBody();
+        try
+        {
+            var ethosResponses = await filterClient.PostQapiAsync( resource, version, requestBody );
+            Console.WriteLine( $"Total records retrieved: {ethosResponses.GetContentCount()}." );
+            Console.WriteLine( $"Json content: {ethosResponses.Content}" );
+        }
+        catch ( Exception e )
+        {
+            Console.WriteLine( e.Message );
+        }
+    }
+
+    /// <summary>
+    /// How to call QAPI BPAPI end point using POST.
+    /// </summary>
+    /// <returns></returns>
+    private static async Task DoGetQapiBpApiExampleAsync()
+    {
+        string resource = "term-codes";
+        string version = "application/vnd.hedtech.integration.v1.0.0+json";
+        TermCodesV100GetRequest requestBody = GetTermCodesRequestBody();
+        try
+        {
+            var ethosResponses = await filterClient.PostQapiAsync<TermCodesV100GetRequest>( resource, requestBody, version );
+            Console.WriteLine( $"Total records retrieved: {ethosResponses.GetContentCount()}." );
+            Console.WriteLine( $"Json content: {ethosResponses.Content}" );
+        }
+        catch ( Exception e )
+        {
+            Console.WriteLine( e.Message );
+        }
+    }
+
+    /// <summary>
+    /// Persons requests body.
+    /// </summary>
+    /// <returns></returns>
+    private static string GetPersonRequestBody()
+    {
+        return @"{'names':[{'firstName':'Robin','fullName':'Robin Hawk','lastName':'Hawk','preference':'preferred','title':'Ms.'}]}";
+    }
+
+    private static TermCodesV100GetRequest GetTermCodesRequestBody()
+    {
+        return new TermCodesV100GetRequest()
+        {
+            AcyrCode = "2017",
+            FaEndPeriod = 12,
+            FaPeriod = 1
+        };
     }
 
     #endregion

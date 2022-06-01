@@ -17,7 +17,7 @@ public class SDKExamples
         }
         else
         {
-            if(! Guid.TryParse( args[0], out Guid id ) )
+            if ( ! Guid.TryParse( args[0], out _ ) )
             {
                 Console.WriteLine( "Please provide an API key as a program argument to run this sample program. You can set 'commandLineArgs' with the api key (a GUID) in launchSettings.json under Properties folder." );
                 return;
