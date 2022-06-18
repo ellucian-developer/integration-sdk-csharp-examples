@@ -37,49 +37,49 @@ public class ExampleBase
 
     private static async Task RunProxyClientExampleAsync()
     {
-        Console.WriteLine( "---------------------------------- RunProxyClientExampleAsync ----------------------------------" );
+        Console.WriteLine( "---------------------------------- RunProxyClientExampleAsync ----------------------------------\n" );
         await EthosProxyClientExample.Run();
     }
 
     private static async Task RunMessageClientExampleAsync()
     {
-        Console.WriteLine( "---------------------------------- RunMessageClientExampleAsync ----------------------------------" );
+        Console.WriteLine( "---------------------------------- RunMessageClientExampleAsync ----------------------------------\n" );
         await EthosMessagesClientExample.Run();
     }
 
     private static async Task RunFilterQueryClientExampleAsync()
     {
-        Console.WriteLine( "---------------------------------- RunFilterQueryClientExampleAsync ----------------------------------" );
+        Console.WriteLine( "---------------------------------- RunFilterQueryClientExampleAsync ----------------------------------\n" );
         await EthosFilterQueryClientExample.Run();
     }
 
     private static async Task RunGetAccessTokenExampleAsync()
     {
-        Console.WriteLine( "---------------------------------- RunGetAccessTokenExampleAsync ----------------------------------" );
+        Console.WriteLine( "---------------------------------- RunGetAccessTokenExampleAsync ----------------------------------\n" );
         await GetAccessTokenExample.Run();
     }
 
     private static async Task RunEthosErrorsClientExampleAsync()
     {
-        Console.WriteLine( "---------------------------------- RunEthosErrorsClientExampleAsync ----------------------------------" );
+        Console.WriteLine( "---------------------------------- RunEthosErrorsClientExampleAsync ----------------------------------\n" );
         await EthosErrorsClientExample.Run();
     }
 
     private static async Task RunEthosConfigurationClientExampleAsync()
     {
-        Console.WriteLine( "---------------------------------- RunEthosConfigurationClientExampleAsync ----------------------------------" );
+        Console.WriteLine( "---------------------------------- RunEthosConfigurationClientExampleAsync ----------------------------------\n" );
         await EthosConfigurationClientExample.Run();
     }
 
     private static async Task RunEthosChangeNotificationSubscriberExampleAsync()
     {
-        Console.WriteLine( "---------------------------------- RunEthosChangeNotificationSubscriberExampleAsync ----------------------------------" );
+        Console.WriteLine( "---------------------------------- RunEthosChangeNotificationSubscriberExampleAsync ----------------------------------\n" );
         await EthosChangeNotificationSubscriberExample.Run();
     }
 
     private static async Task RunEthosChangeNotificationServiceExampleAsync()
     {
-        Console.WriteLine( "---------------------------------- RunEthosChangeNotificationServiceExampleAsync ----------------------------------" );
+        Console.WriteLine( "---------------------------------- RunEthosChangeNotificationServiceExampleAsync ----------------------------------\n" );
         await EthosChangeNotificationServiceExample.Run();
     }
 

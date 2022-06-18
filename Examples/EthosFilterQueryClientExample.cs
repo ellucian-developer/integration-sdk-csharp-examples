@@ -14,9 +14,9 @@ using Ellucian.Generated.BpApi.PersonCommentsV100PutRequest;
 using Ellucian.Generated.BpApi.PersonCommentsV100PutResponse;
 using Ellucian.Generated.BpApi.PersonSearchV100GetRequest;
 using Ellucian.Generated.BpApi.TermCodesV100GetRequest;
-using Ellucian.Generated.BpApi.TermCodesV100GetResponse;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Ellucian.Examples;
 
@@ -48,8 +48,11 @@ public class EthosFilterQueryClientExample : ExampleBase
         await GetPagesUsingFilterMapValuesAsync();
         await GetPagesUsingNamedQueryAsync();
         await ExampleFullCrudWithStronglyTypedBpAPiAsync();
-        await DoPostQapiEEDMExampleAsync();
-        await DoPostQapiBpApiExampleAsync();
+        await GetWithQapiPersonsEEDMExampleAsync();
+        await GetWithQapiBpApiTermCodesExampleAsync();
+        await GetPagesFromOffsetWithQAPITermCodesExampleAsync();
+        await GetPagesWithQAPITermCodesExampleAsync();
+        await GetTermCodesGetQAPITotalCountExampleAsync();
     }
 
     #region All Examples
@@ -607,14 +610,14 @@ public class EthosFilterQueryClientExample : ExampleBase
     /// How to call QAPI EEDM end point using POST.
     /// </summary>
     /// <returns></returns>
-    private static async Task DoPostQapiEEDMExampleAsync()
+    private static async Task GetWithQapiPersonsEEDMExampleAsync()
     {
         string resource = "persons";
         string version = "application/vnd.hedtech.integration.v12+json";
         string requestBody = GetPersonRequestBody();
         try
         {
-            var ethosResponses = await filterClient.PostQapiAsync( resource, version, requestBody );
+            var ethosResponses = await filterClient.GetWithQapiAsync( resource, version, requestBody );
             Console.WriteLine( $"Total records retrieved: {ethosResponses.GetContentCount()}." );
             Console.WriteLine( $"Json content: {ethosResponses.Content}" );
         }
@@ -628,16 +631,87 @@ public class EthosFilterQueryClientExample : ExampleBase
     /// How to call QAPI BPAPI end point using POST.
     /// </summary>
     /// <returns></returns>
-    private static async Task DoPostQapiBpApiExampleAsync()
+    private static async Task GetWithQapiBpApiTermCodesExampleAsync()
     {
         string resource = "term-codes";
         string version = "application/vnd.hedtech.integration.v1.0.0+json";
         TermCodesV100GetRequest requestBody = GetTermCodesRequestBody();
         try
         {
-            var ethosResponses = await filterClient.PostQapiAsync<TermCodesV100GetRequest>( resource, requestBody, version );
+            var ethosResponses = await filterClient.GetWithQapiAsync<TermCodesV100GetRequest>( resource, requestBody, version );
             Console.WriteLine( $"Total records retrieved: {ethosResponses.GetContentCount()}." );
             Console.WriteLine( $"Json content: {ethosResponses.Content}" );
+        }
+        catch ( Exception e )
+        {
+            Console.WriteLine( e.Message );
+        }
+    }
+
+    /// <summary>
+    /// How to call QAPI BPAPI end point using paging. 
+    /// </summary>
+    /// <returns></returns>
+    private static async Task GetPagesFromOffsetWithQAPITermCodesExampleAsync()
+    {
+        Console.WriteLine( "EXAMPLE: GetPagesFromOffsetWithQAPITermCodesExampleAsync" );
+        string resource = "term-codes";
+        string version = "application/vnd.hedtech.integration.v1.0.0+json";
+        TermCodesV100GetRequest requestBody = new TermCodesV100GetRequest() { AcyrCode = "2017" };
+        try
+        {
+            var ethosResponses = await filterClient.GetPagesFromOffsetWithQAPIAsync<TermCodesV100GetRequest>( resource, requestBody, version, 40, 0 );
+            foreach ( var ethosResponse in ethosResponses )
+            {
+                Console.WriteLine( $"Total records retrieved: {ethosResponse.GetContentCount()}." );
+                Console.WriteLine( $"Json content: {ethosResponse.Content}" );
+            }
+        }
+        catch ( Exception e )
+        {
+            Console.WriteLine( e.Message );
+        }
+    }
+
+    /// <summary>
+    /// How to call QAPI BPAPI end point using paging. 
+    /// </summary>
+    /// <returns></returns>
+    private static async Task GetPagesWithQAPITermCodesExampleAsync()
+    {
+        Console.WriteLine( "EXAMPLE: GetPagesWithQAPITermCodesExampleAsync" );
+        string resource = "term-codes";
+        string version = "application/vnd.hedtech.integration.v1.0.0+json";
+        JObject requestBody = JObject.FromObject( new { acyrCode = "2017" } );
+        try
+        {
+            var ethosResponses = await filterClient.GetPagesWithQAPIAsync( resource, requestBody, version, 10 );
+            foreach ( var ethosResponse in ethosResponses )
+            {
+                Console.WriteLine( $"Total records retrieved: {ethosResponse.GetContentCount()}." );
+                Console.WriteLine( $"Json content:\n {JValue.Parse( ethosResponse.Content ).ToString( Formatting.Indented )}\n" );
+            }
+        }
+        catch ( Exception e )
+        {
+            Console.WriteLine( e.Message );
+        }
+    }
+
+    /// <summary>
+    /// How to call QAPI BPAPI end point using paging. 
+    /// </summary>
+    /// <returns></returns>
+    private static async Task GetTermCodesGetQAPITotalCountExampleAsync()
+    {
+        Console.WriteLine( "EXAMPLE: GetQAPITermCodesGetQAPITotalCountExampleAsync" );
+        string resource = "term-codes";
+        string version = "application/vnd.hedtech.integration.v1.0.0+json";
+        JObject requestBody = JObject.FromObject( new { acyrCode = "2017" } );
+        try
+        {
+            var count = await filterClient.GetTotalCountAsync<JObject>( resource, requestBody, version );
+            Console.WriteLine( $"Total records: {count}." );
         }
         catch ( Exception e )
         {
