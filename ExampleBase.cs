@@ -1,6 +1,6 @@
 ﻿/*
  * ******************************************************************************
- *   Copyright  2022 Ellucian Company L.P. and its affiliates.
+ *   Copyright 2022 Ellucian Company L.P. and its affiliates.
  * ******************************************************************************
  */
 
@@ -89,7 +89,7 @@ public class ExampleBase
 
     internal static EthosClientBuilder GetEthosClientBuilder()
     {
-        return ethosClientBuilder ??= new EthosClientBuilder( SAMPLE_API_KEY ).WithConnectionTimeout( 240 );
+        return ethosClientBuilder = new EthosClientBuilder( SAMPLE_API_KEY ).WithConnectionTimeout( 240 );
     }
 
     internal static void BuildEthosProxyClient()

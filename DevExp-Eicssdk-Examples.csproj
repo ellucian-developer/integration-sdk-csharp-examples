@@ -17,11 +17,11 @@
     <Reference Include="Ellucian.Ethos.Integration">
       <HintPath>\Dependencies\Ellucian.Ethos.Integration.dll</HintPath>
     </Reference>
-    <Reference Include="EllucianGeneratedBpapiBan">
-      <HintPath>\Dependencies\EllucianGeneratedBpapiBan.dll</HintPath>
+    <Reference Include="Ellucian.Generated.BpApi.Ban">
+      <HintPath>Dependencies\Ellucian.Generated.BpApi.Ban.dll</HintPath>
     </Reference>
-    <Reference Include="EllucianGeneratedEedm">
-      <HintPath>\Dependencies\EllucianGeneratedEedm.dll</HintPath>
+    <Reference Include="Ellucian.Generated.Eedm">
+      <HintPath>Dependencies\Ellucian.Generated.Eedm.dll</HintPath>
     </Reference>
   </ItemGroup>
 

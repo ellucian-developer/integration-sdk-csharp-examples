@@ -1,21 +1,16 @@
 ﻿/*
  * ******************************************************************************
- *   Copyright  2022 Ellucian Company L.P. and its affiliates.
+ *   Copyright 2022 Ellucian Company L.P. and its affiliates.
  * ******************************************************************************
  */
 
 using Ellucian.Ethos.Integration.Client;
 using Ellucian.Ethos.Integration.Client.Proxy;
-using Ellucian.Generated.BpApi.TermCodesV100GetRequest;
+using Ellucian.Generated.BpApi.Ban.TermCodesV100GetRequest;
 using Ellucian.Generated.Eedm;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Ellucian.Examples;
 

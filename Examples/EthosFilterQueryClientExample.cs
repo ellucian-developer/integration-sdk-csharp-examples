@@ -1,6 +1,6 @@
 ﻿/*
  * ******************************************************************************
- *   Copyright  2022 Ellucian Company L.P. and its affiliates.
+ *   Copyright 2022 Ellucian Company L.P. and its affiliates.
  * ******************************************************************************
  */
 
@@ -8,12 +8,12 @@ using Ellucian.Ethos.Integration.Client;
 using Ellucian.Ethos.Integration.Client.Extensions;
 using Ellucian.Ethos.Integration.Client.Filter.Extensions;
 using Ellucian.Ethos.Integration.Client.Proxy.Filter;
-using Ellucian.Generated.BpApi.PersonCommentsV100PostRequest;
-using Ellucian.Generated.BpApi.PersonCommentsV100PostResponse;
-using Ellucian.Generated.BpApi.PersonCommentsV100PutRequest;
-using Ellucian.Generated.BpApi.PersonCommentsV100PutResponse;
-using Ellucian.Generated.BpApi.PersonSearchV100GetRequest;
-using Ellucian.Generated.BpApi.TermCodesV100GetRequest;
+using Ellucian.Generated.BpApi.Ban.PersonCommentsV100PostRequest;
+using Ellucian.Generated.BpApi.Ban.PersonCommentsV100PostResponse;
+using Ellucian.Generated.BpApi.Ban.PersonCommentsV100PutRequest;
+using Ellucian.Generated.BpApi.Ban.PersonCommentsV100PutResponse;
+using Ellucian.Generated.BpApi.Ban.PersonSearchV100GetRequest;
+using Ellucian.Generated.BpApi.Ban.TermCodesV100GetRequest;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

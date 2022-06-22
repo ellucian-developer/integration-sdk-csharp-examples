@@ -1,13 +1,12 @@
 ﻿/*
  * ******************************************************************************
- *   Copyright  2022 Ellucian Company L.P. and its affiliates.
+ *   Copyright 2022 Ellucian Company L.P. and its affiliates.
  * ******************************************************************************
  */
 
 using Ellucian.Ethos.Integration.Client;
 using Ellucian.Ethos.Integration.Client.Messages;
 using Ellucian.Ethos.Integration.Service;
-using Ellucian.Examples;
 
 namespace Ellucian.Examples;
 
