@@ -8,15 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ellucian.Ethos.Integration" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Ellucian.Ethos.Integration">
-      <HintPath>\Dependencies\Ellucian.Ethos.Integration.dll</HintPath>
-    </Reference>
     <Reference Include="Ellucian.Generated.BpApi.Ban">
       <HintPath>Dependencies\Ellucian.Generated.BpApi.Ban.dll</HintPath>
     </Reference>
