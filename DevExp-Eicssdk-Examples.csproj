@@ -15,17 +15,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Examples\" />
+    <Folder Include="Dependencies\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Ellucian.Generated.BpApi.Ban">
       <HintPath>Dependencies\Ellucian.Generated.BpApi.Ban.dll</HintPath>
     </Reference>
     <Reference Include="Ellucian.Generated.Eedm">
       <HintPath>Dependencies\Ellucian.Generated.Eedm.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Examples\" />
-    <Folder Include="Dependencies\" />
   </ItemGroup>
 
 </Project>

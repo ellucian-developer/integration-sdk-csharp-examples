@@ -6,7 +6,7 @@
 
 using Ellucian.Ethos.Integration.Client;
 using Ellucian.Ethos.Integration.Client.Proxy;
-using Ellucian.Generated.BpApi.Ban.TermCodesV100GetRequest;
+using Ellucian.Generated.BpApi.Ban.TermCodes100GetRequest;
 using Ellucian.Generated.Eedm;
 
 using Newtonsoft.Json;
@@ -888,7 +888,7 @@ public class EthosProxyClientExample : ExampleBase
             string version = "application/json";
             int numRows = 10;
             var jsonNode = await proxyClient.GetRowsAsJArrayAsync( resourceName, version, numRows );
-            var termCodes = JsonConvert.DeserializeObject <IEnumerable<TermCodesV100GetRequest>>( jsonNode.ToString() );
+            var termCodes = JsonConvert.DeserializeObject <IEnumerable<TermCodes100GetRequest>>( jsonNode.ToString() );
             Console.WriteLine( "******* Get some number of rows as JSON and convert to strongly typed objects example. *******" );
             Console.WriteLine( $"Get data for resource: { resourceName }" );
             Console.WriteLine( $"NUM ROWS: { termCodes!.ToArray().Count() }" );
@@ -965,12 +965,12 @@ public class EthosProxyClientExample : ExampleBase
     {
         try
         {
-            var response = await proxyClient.GetAsync<IEnumerable<TermCodesV100GetRequest>>( "term-codes" );
+            var response = await proxyClient.GetAsync<IEnumerable<TermCodes100GetRequest>>( "term-codes" );
 
             if ( response != null )
             {
                 Console.WriteLine( "" );
-                foreach ( var item in ( IEnumerable<TermCodesV100GetRequest> ) response.Dto )
+                foreach ( var item in ( IEnumerable<TermCodes100GetRequest> ) response.Dto )
                 {
                     Console.WriteLine( $"Activity Date: { item.ActivityDate }, CODE: { item.Code }, DESC: { item.Desc } " );
                 }

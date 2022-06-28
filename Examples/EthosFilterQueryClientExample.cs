@@ -8,12 +8,12 @@ using Ellucian.Ethos.Integration.Client;
 using Ellucian.Ethos.Integration.Client.Extensions;
 using Ellucian.Ethos.Integration.Client.Filter.Extensions;
 using Ellucian.Ethos.Integration.Client.Proxy.Filter;
-using Ellucian.Generated.BpApi.Ban.PersonCommentsV100PostRequest;
-using Ellucian.Generated.BpApi.Ban.PersonCommentsV100PostResponse;
-using Ellucian.Generated.BpApi.Ban.PersonCommentsV100PutRequest;
-using Ellucian.Generated.BpApi.Ban.PersonCommentsV100PutResponse;
-using Ellucian.Generated.BpApi.Ban.PersonSearchV100GetRequest;
-using Ellucian.Generated.BpApi.Ban.TermCodesV100GetRequest;
+using Ellucian.Generated.BpApi.Ban.PersonComments100PostRequest;
+using Ellucian.Generated.BpApi.Ban.PersonComments100PostResponse;
+using Ellucian.Generated.BpApi.Ban.PersonComments100PutRequest;
+using Ellucian.Generated.BpApi.Ban.PersonComments100PutResponse;
+using Ellucian.Generated.BpApi.Ban.PersonSearch100GetRequest;
+using Ellucian.Generated.BpApi.Ban.TermCodes100GetRequest;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -550,17 +550,17 @@ public class EthosFilterQueryClientExample : ExampleBase
         var filter = filterMap.WithParameterPair("lastName", "abbe").Build();
 
         //Use filter client to perform a serch using http GET to find records.
-        var response = await filterClient.GetWithFilterMapAsync<IEnumerable<PersonSearchV100GetRequest>>(resourceName, filter);
-        int num = GetRandomNumber(((IEnumerable<PersonSearchV100GetRequest>)response.Dto).Count());
+        var response = await filterClient.GetWithFilterMapAsync<IEnumerable<PersonSearch100GetRequest>>(resourceName, filter);
+        int num = GetRandomNumber(((IEnumerable<PersonSearch100GetRequest>)response.Dto).Count());
 
         try
         {
             //Select a random record from searched records collection.
-            PersonSearchV100GetRequest? searchedRecord = ((IEnumerable<PersonSearchV100GetRequest>)response.Dto).ToList()[num];
+            PersonSearch100GetRequest? searchedRecord = ((IEnumerable<PersonSearch100GetRequest>)response.Dto).ToList()[num];
             Console.WriteLine($"{ searchedRecord.LastName } { searchedRecord.Id }");
 
             //Create a strongly typed object for POST.
-            PersonCommentsV100PostRequest pcPostReq = new PersonCommentsV100PostRequest()
+            PersonComments100PostRequest pcPostReq = new PersonComments100PostRequest()
             {
                 Id = searchedRecord.Id,
                 CmttCode = "100",
@@ -573,15 +573,15 @@ public class EthosFilterQueryClientExample : ExampleBase
             };
 
             //Perform POST.
-            EthosResponse ethosPostResponse = await filterClient.PostAsync<PersonCommentsV100PostRequest>("person-comments", pcPostReq);
-            var pcResps = ethosPostResponse.Deserialize<IEnumerable<PersonCommentsV100PostResponse>>();
-            foreach (PersonCommentsV100PostResponse pcResp in pcResps)
+            EthosResponse ethosPostResponse = await filterClient.PostAsync<PersonComments100PostRequest>("person-comments", pcPostReq);
+            var pcResps = ethosPostResponse.Deserialize<IEnumerable<PersonComments100PostResponse>>();
+            foreach (PersonComments100PostResponse pcResp in pcResps)
             {
                 Console.WriteLine($"Contact Date: {pcResp.ContactDate}, Text: {pcResp.Text}, Text Nar: {pcResp.TextNar}");
             }
 
             //Create a strongly typed object for PUT.
-            PersonCommentsV100PutRequest putReq = new PersonCommentsV100PutRequest()
+            PersonComments100PutRequest putReq = new PersonComments100PutRequest()
             {
                 Id = pcPostReq.Id,
                 CmttCode = pcPostReq.CmttCode,
@@ -593,9 +593,9 @@ public class EthosFilterQueryClientExample : ExampleBase
             };
 
             //Perform PUT
-            EthosResponse ethosPutResponse = await filterClient.PutAsync<PersonCommentsV100PutRequest>("person-comments", putReq);
-            var putResps = ethosPutResponse.Deserialize<IEnumerable<PersonCommentsV100PutResponse>>();
-            foreach (PersonCommentsV100PutResponse putResp in putResps)
+            EthosResponse ethosPutResponse = await filterClient.PutAsync<PersonComments100PutRequest>("person-comments", putReq);
+            var putResps = ethosPutResponse.Deserialize<IEnumerable<PersonComments100PutResponse>>();
+            foreach (PersonComments100PutResponse putResp in putResps)
             {
                 Console.WriteLine($"Contact Date: {putResp.ContactDate}, Text: {putResp.Text}, Text Nar: {putResp.TextNar}");
             }
@@ -635,10 +635,10 @@ public class EthosFilterQueryClientExample : ExampleBase
     {
         string resource = "term-codes";
         string version = "application/vnd.hedtech.integration.v1.0.0+json";
-        TermCodesV100GetRequest requestBody = GetTermCodesRequestBody();
+        TermCodes100GetRequest requestBody = GetTermCodesRequestBody();
         try
         {
-            var ethosResponses = await filterClient.GetWithQapiAsync<TermCodesV100GetRequest>( resource, requestBody, version );
+            var ethosResponses = await filterClient.GetWithQapiAsync<TermCodes100GetRequest>( resource, requestBody, version );
             Console.WriteLine( $"Total records retrieved: {ethosResponses.GetContentCount()}." );
             Console.WriteLine( $"Json content: {ethosResponses.Content}" );
         }
@@ -657,10 +657,10 @@ public class EthosFilterQueryClientExample : ExampleBase
         Console.WriteLine( "EXAMPLE: GetPagesFromOffsetWithQAPITermCodesExampleAsync" );
         string resource = "term-codes";
         string version = "application/vnd.hedtech.integration.v1.0.0+json";
-        TermCodesV100GetRequest requestBody = new TermCodesV100GetRequest() { AcyrCode = "2017" };
+        TermCodes100GetRequest requestBody = new TermCodes100GetRequest() { AcyrCode = "2017" };
         try
         {
-            var ethosResponses = await filterClient.GetPagesFromOffsetWithQAPIAsync<TermCodesV100GetRequest>( resource, requestBody, version, 40, 0 );
+            var ethosResponses = await filterClient.GetPagesFromOffsetWithQAPIAsync<TermCodes100GetRequest>( resource, requestBody, version, 40, 0 );
             foreach ( var ethosResponse in ethosResponses )
             {
                 Console.WriteLine( $"Total records retrieved: {ethosResponse.GetContentCount()}." );
@@ -728,9 +728,9 @@ public class EthosFilterQueryClientExample : ExampleBase
         return @"{'names':[{'firstName':'Robin','fullName':'Robin Hawk','lastName':'Hawk','preference':'preferred','title':'Ms.'}]}";
     }
 
-    private static TermCodesV100GetRequest GetTermCodesRequestBody()
+    private static TermCodes100GetRequest GetTermCodesRequestBody()
     {
-        return new TermCodesV100GetRequest()
+        return new TermCodes100GetRequest()
         {
             AcyrCode = "2017",
             FaEndPeriod = 12,
